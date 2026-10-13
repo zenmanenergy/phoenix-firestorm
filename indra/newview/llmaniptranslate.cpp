@@ -444,12 +444,12 @@ bool LLManipTranslate::handleHover(S32 x, S32 y, MASK mask)
     // ...build mode moves camera about focus point
     if (mObjectSelection->getSelectType() != SELECT_TYPE_HUD)
     {
-        if (x < ROTATE_H_MARGIN)
+        if (x < world_rect.mLeft + ROTATE_H_MARGIN) // <FS:Steve/> multi-monitor: world view may not start at the window corner
         {
             gAgentCamera.cameraOrbitAround(rotate_angle);
             rotated = true;
         }
-        else if (x > world_rect.getWidth() - ROTATE_H_MARGIN)
+        else if (x > world_rect.mRight - ROTATE_H_MARGIN) // <FS:Steve/>
         {
             gAgentCamera.cameraOrbitAround(-rotate_angle);
             rotated = true;
@@ -996,7 +996,8 @@ void LLManipTranslate::highlightManipulators(S32 x, S32 y)
     LLRect world_view_rect = gViewerWindow->getWorldViewRectScaled();
     F32 half_width = (F32)world_view_rect.getWidth() / 2.f;
     F32 half_height = (F32)world_view_rect.getHeight() / 2.f;
-    LLVector2 mousePos((F32)x - half_width, (F32)y - half_height);
+    //LLVector2 mousePos((F32)x - half_width, (F32)y - half_height);
+    LLVector2 mousePos((F32)x - (F32)world_view_rect.getCenterX(), (F32)y - (F32)world_view_rect.getCenterY()); // <FS:Steve/> multi-monitor: relative to the world view center
     LLVector2 mouse_delta;
 
     // Keep order consistent with insertion via stable_sort

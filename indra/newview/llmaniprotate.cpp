@@ -1243,8 +1243,10 @@ bool LLManipRotate::updateVisiblity()
         // x axis range is (-aspect * 0.5f, +aspect * 0.5)
         // y axis range is (-0.5, 0.5)
         // so use getWorldViewHeightRaw as scale factor when converting to pixel coordinates
-        mCenterScreen.set((S32)((0.5f - center.mV[VY]) / gAgentCamera.mHUDCurZoom * gViewerWindow->getWorldViewHeightScaled()),
-                            (S32)((center.mV[VZ] + 0.5f) / gAgentCamera.mHUDCurZoom * gViewerWindow->getWorldViewHeightScaled()));
+        // <FS:Steve> Multi-monitor: the world view may not start at the window corner
+        mCenterScreen.set(gViewerWindow->getWorldViewRectScaled().mLeft + (S32)((0.5f - center.mV[VY]) / gAgentCamera.mHUDCurZoom * gViewerWindow->getWorldViewHeightScaled()),
+                            gViewerWindow->getWorldViewRectScaled().mBottom + (S32)((center.mV[VZ] + 0.5f) / gAgentCamera.mHUDCurZoom * gViewerWindow->getWorldViewHeightScaled()));
+        // </FS:Steve>
         visible = true;
     }
     else
@@ -1781,8 +1783,11 @@ void LLManipRotate::mouseToRay( S32 x, S32 y, LLVector3* ray_pt, LLVector3* ray_
 {
     if (LLSelectMgr::getInstance()->getSelection()->getSelectType() == SELECT_TYPE_HUD)
     {
-        F32 mouse_x = (((F32)x / gViewerWindow->getWorldViewRectScaled().getWidth()) - 0.5f) / gAgentCamera.mHUDCurZoom;
-        F32 mouse_y = ((((F32)y) / gViewerWindow->getWorldViewRectScaled().getHeight()) - 0.5f) / gAgentCamera.mHUDCurZoom;
+        // <FS:Steve> Multi-monitor: the world view may not start at the window corner
+        const LLRect world_view_rect = gViewerWindow->getWorldViewRectScaled();
+        F32 mouse_x = (((F32)(x - world_view_rect.mLeft) / world_view_rect.getWidth()) - 0.5f) / gAgentCamera.mHUDCurZoom;
+        F32 mouse_y = ((((F32)(y - world_view_rect.mBottom)) / world_view_rect.getHeight()) - 0.5f) / gAgentCamera.mHUDCurZoom;
+        // </FS:Steve>
 
         *ray_pt = LLVector3(-1.f, -mouse_x, mouse_y);
         *ray_dir = LLVector3(1.f, 0.f, 0.f);

@@ -170,9 +170,11 @@ void LLToolGun::draw()
         //crosshair->draw(
         //  ( gViewerWindow->getWorldViewRectScaled().getWidth() - crosshair->getWidth() ) / 2,
         //  ( gViewerWindow->getWorldViewRectScaled().getHeight() - crosshair->getHeight() ) / 2);
+        // <FS:Steve> Multi-monitor: center on the world view, which may not start at the window corner
         mCrosshairp->draw(
-            ( gViewerWindow->getWorldViewRectScaled().getWidth() - mCrosshairp->getWidth() ) / 2,
-            ( gViewerWindow->getWorldViewRectScaled().getHeight() - mCrosshairp->getHeight() ) / 2);
+            gViewerWindow->getWorldViewRectScaled().getCenterX() - mCrosshairp->getWidth() / 2,
+            gViewerWindow->getWorldViewRectScaled().getCenterY() - mCrosshairp->getHeight() / 2);
+        // </FS:Steve>
         // </FS:Ansariel> Performance tweak
     }
 }

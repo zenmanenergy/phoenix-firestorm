@@ -690,14 +690,17 @@ void LLToolGrabBase::handleHoverActive(S32 x, S32 y, MASK mask)
             // Handle auto-rotation at screen edge.
             LLVector3 grab_pos_agent = gAgent.getPosAgentFromGlobal( grab_point_global );
 
-            LLCoordGL grab_center_gl( gViewerWindow->getWorldViewWidthScaled() / 2, gViewerWindow->getWorldViewHeightScaled() / 2);
+            // <FS:Steve> Multi-monitor: the world view may not start at the window corner
+            const LLRect world_view_rect = gViewerWindow->getWorldViewRectScaled();
+            LLCoordGL grab_center_gl( world_view_rect.getCenterX(), world_view_rect.getCenterY());
+            // </FS:Steve>
             LLViewerCamera::getInstance()->projectPosAgentToScreen(grab_pos_agent, grab_center_gl);
 
             const S32 ROTATE_H_MARGIN = gViewerWindow->getWorldViewWidthScaled() / 20;
             const F32 ROTATE_ANGLE_PER_SECOND = 30.f * DEG_TO_RAD;
             const F32 rotate_angle = ROTATE_ANGLE_PER_SECOND / gFPSClamped;
             // ...build mode moves camera about focus point
-            if (grab_center_gl.mX < ROTATE_H_MARGIN)
+            if (grab_center_gl.mX < world_view_rect.mLeft + ROTATE_H_MARGIN) // <FS:Steve/>
             {
                 if (gAgentCamera.getFocusOnAvatar())
                 {
@@ -708,7 +711,7 @@ void LLToolGrabBase::handleHoverActive(S32 x, S32 y, MASK mask)
                     gAgentCamera.cameraOrbitAround(rotate_angle);
                 }
             }
-            else if (grab_center_gl.mX > gViewerWindow->getWorldViewWidthScaled() - ROTATE_H_MARGIN)
+            else if (grab_center_gl.mX > world_view_rect.mRight - ROTATE_H_MARGIN) // <FS:Steve/>
             {
                 if (gAgentCamera.getFocusOnAvatar())
                 {
@@ -721,8 +724,8 @@ void LLToolGrabBase::handleHoverActive(S32 x, S32 y, MASK mask)
             }
 
             // Don't move above top of screen or below bottom
-            if ((grab_center_gl.mY < gViewerWindow->getWorldViewHeightScaled() - 6)
-                && (grab_center_gl.mY > 24))
+            if ((grab_center_gl.mY < world_view_rect.mTop - 6)      // <FS:Steve/>
+                && (grab_center_gl.mY > world_view_rect.mBottom + 24)) // <FS:Steve/>
             {
                 // Transmit update to simulator
                 LLVector3 grab_pos_region = objectp->getRegion()->getPosRegionFromGlobal( grab_point_global );

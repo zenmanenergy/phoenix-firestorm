@@ -270,8 +270,11 @@ bool LLManip::getMousePointOnPlaneGlobal(LLVector3d& point, S32 x, S32 y, LLVect
     if (mObjectSelection->getSelectType() == SELECT_TYPE_HUD)
     {
         bool result = false;
-        F32 mouse_x = ((F32)x / gViewerWindow->getWorldViewWidthScaled() - 0.5f) * LLViewerCamera::getInstance()->getAspect() / gAgentCamera.mHUDCurZoom;
-        F32 mouse_y = ((F32)y / gViewerWindow->getWorldViewHeightScaled() - 0.5f) / gAgentCamera.mHUDCurZoom;
+        // <FS:Steve> Multi-monitor: the world view may not start at the window corner
+        const LLRect world_view_rect = gViewerWindow->getWorldViewRectScaled();
+        F32 mouse_x = ((F32)(x - world_view_rect.mLeft) / gViewerWindow->getWorldViewWidthScaled() - 0.5f) * LLViewerCamera::getInstance()->getAspect() / gAgentCamera.mHUDCurZoom;
+        F32 mouse_y = ((F32)(y - world_view_rect.mBottom) / gViewerWindow->getWorldViewHeightScaled() - 0.5f) / gAgentCamera.mHUDCurZoom;
+        // </FS:Steve>
 
         LLVector3 origin_agent = gAgent.getPosAgentFromGlobal(origin);
         LLVector3 mouse_pos = LLVector3(0.f, -mouse_x, mouse_y);
@@ -509,8 +512,10 @@ void LLManip::renderXYZ(const LLVector3 &vec)
 {
     const S32 PAD = 10;
     std::string feedback_string;
-    S32 window_center_x = gViewerWindow->getWorldViewRectScaled().getWidth() / 2;
-    S32 window_center_y = gViewerWindow->getWorldViewRectScaled().getHeight() / 2;
+    // <FS:Steve> Multi-monitor: the world view may not start at the window corner
+    S32 window_center_x = gViewerWindow->getWorldViewRectScaled().getCenterX();
+    S32 window_center_y = gViewerWindow->getWorldViewRectScaled().getCenterY();
+    // </FS:Steve>
     S32 vertical_offset = window_center_y - VERTICAL_OFFSET;
 
 
