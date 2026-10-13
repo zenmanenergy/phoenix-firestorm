@@ -202,6 +202,11 @@ void FSRadar::updateRadarList()
     static const std::string str_region_leaving =           LLTrans::getString("leaving_region");
     static const std::string str_avatar_age_alert =         LLTrans::getString("avatar_age_alert");
     static const std::string str_avatar_age_hidden =        LLTrans::getString("avatar_age_not_available");
+    // <FS:Steve> Gender column (from the avatar shape's male/female setting)
+    static const std::string str_gender_male =              LLTrans::getString("radar_gender_male");
+    static const std::string str_gender_female =            LLTrans::getString("radar_gender_female");
+    static const std::string str_gender_unknown =           LLTrans::getString("radar_gender_unknown");
+    // </FS:Steve>
 
     static LLCachedControl<bool> sRadarReportChatRangeEnter(gSavedSettings, "RadarReportChatRangeEnter");
     static LLCachedControl<bool> sRadarReportChatRangeLeave(gSavedSettings, "RadarReportChatRangeLeave");
@@ -525,6 +530,23 @@ void FSRadar::updateRadarList()
         entry["range"] = (avRange > AVATAR_UNKNOWN_RANGE ? llformat("%3.2f", avRange) : llformat(">%3.2f", drawRadius));
         entry["typing"] = (avVo && avVo->isTyping());
         entry["sitting"] = (avVo && (avVo->getParent() || avVo->isMotionActive(ANIM_AGENT_SIT_GROUND) || avVo->isMotionActive(ANIM_AGENT_SIT_GROUND_CONSTRAINED)));
+
+        // <FS:Steve> Gender column: the shape's male/female setting, which every viewer receives as
+        // part of the avatar's appearance. Only known once that avatar's appearance has arrived,
+        // so it is "?" while loading and blank when the avatar is out of draw distance.
+        if (!avVo)
+        {
+            entry["gender"] = LLStringUtil::null;
+        }
+        else if (avVo->visualParamWeightsAreDefault())
+        {
+            entry["gender"] = str_gender_unknown;
+        }
+        else
+        {
+            entry["gender"] = (avVo->getVisualParamWeight("male") > 0.5f) ? str_gender_male : str_gender_female;
+        }
+        // </FS:Steve>
 
         if (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
         {

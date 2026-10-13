@@ -215,6 +215,12 @@
 							 label="Age"
 							 name="age"
 							 width="50"/>
+							<!-- <FS:Steve> Gender column: M/F from the avatar shape -->
+							<radar_list.columns
+							 label="Gender"
+							 name="gender"
+							 tool_tip="Male or female, from the avatar shape (? while loading, blank when out of draw distance)"
+							 width="45"/>
 							<radar_list.columns
 							 label="Seen"
 							 name="seen"

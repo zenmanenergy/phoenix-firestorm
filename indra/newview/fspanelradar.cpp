@@ -102,6 +102,7 @@ FSPanelRadar::FSPanelRadar()
     mColumnBits["seen"] = 128;
     mColumnBits["range"] = 256;
     mColumnBits["has_notes"] = 512;
+    mColumnBits["gender"] = 1024; // <FS:Steve/> Gender column
 }
 
 FSPanelRadar::~FSPanelRadar()
@@ -395,6 +396,13 @@ void FSPanelRadar::updateList(const std::vector<LLSD>& entries, const LLSD& stat
 
         row_data["columns"][10]["column"] = "seen_sort";
         row_data["columns"][10]["value"] = entry["seen"].asString() + "_" + entry["name"].asString();
+
+        // <FS:Steve> Gender column
+        row_data["columns"][11]["column"] = "gender";
+        row_data["columns"][11]["value"] = entry["gender"];
+        row_data["columns"][11]["halign"] = "center";
+        row_data["columns"][11]["font"] = default_font;
+        // </FS:Steve>
 
         LLScrollListItem* row = mRadarList->addElement(row_data);
 
