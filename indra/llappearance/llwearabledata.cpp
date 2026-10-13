@@ -111,7 +111,13 @@ void LLWearableData::pushWearable(const LLWearableType::EType type,
         if (!getWearableIndex(wearable, idxWearable))
             mWearableDatas[type].push_back(wearable);
         else
-            llassert(false); // pushWearable() on an already added wearable is a bug *somewhere*
+        {
+            // <FS:Steve> Log instead of asserting: RelWithDebInfo builds turn llassert into a crash,
+            // and a duplicate wearable in an outfit is harmless here (it simply isn't added twice)
+            //llassert(false); // pushWearable() on an already added wearable is a bug *somewhere*
+            LL_WARNS() << "pushWearable() on an already added wearable of type " << type << ", ignoring" << LL_ENDL;
+            // </FS:Steve>
+        }
 // [/RLVa:KB]
 //      mWearableDatas[type].push_back(wearable);       mWearableDatas[type].push_back(wearable);
         if (trigger_updated)
