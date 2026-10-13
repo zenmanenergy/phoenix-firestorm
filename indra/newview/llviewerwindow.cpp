@@ -1246,6 +1246,14 @@ bool LLViewerWindow::handleAnyMouseClick(LLWindow *window, LLCoordGL pos, MASK m
             }
     }
 
+    // <FS:Steve> Multi-monitor: empty space on the other monitors is not the 3D world, so clicks
+    // there must not select, move or touch anything in-world
+    if (down && isOutsideLockedWorldView(x, y))
+    {
+        return true;
+    }
+    // </FS:Steve>
+
     // Do not allow tool manager to handle mouseclicks if we have disconnected
     if(!gDisconnected && LLToolMgr::getInstance()->getCurrentTool()->handleAnyMouseClick( x, y, mask, clicktype, down ) )
     {
@@ -3777,8 +3785,12 @@ void LLViewerWindow::moveCursorToCenter()
 
     if (mouse_warp)
     {
-        S32 x = getWorldViewWidthScaled() / 2;
-        S32 y = getWorldViewHeightScaled() / 2;
+        // <FS:Steve> Multi-monitor: the world view may not start at the window's corner
+        //S32 x = getWorldViewWidthScaled() / 2;
+        //S32 y = getWorldViewHeightScaled() / 2;
+        S32 x = getWorldViewRectScaled().getCenterX();
+        S32 y = getWorldViewRectScaled().getCenterY();
+        // </FS:Steve>
 
         LLUI::getInstance()->setMousePositionScreen(x, y);
 
@@ -4155,6 +4167,14 @@ void LLViewerWindow::updateUI()
                 }
             }
 
+            // <FS:Steve> Multi-monitor: no in-world hover effects over the other monitors
+            if (!handled && isOutsideLockedWorldView(x, y))
+            {
+                setCursor(UI_CURSOR_ARROW);
+                handled = true;
+            }
+            // </FS:Steve>
+
             if (!handled)
             {
                 LLTool *tool = LLToolMgr::getInstance()->getCurrentTool();
@@ -4250,7 +4270,8 @@ void LLViewerWindow::updateUI()
                 }
 
                 LLTool* current_tool = LLToolMgr::getInstance()->getCurrentTool();
-                if (!tool_tip_handled && current_tool)
+                if (!tool_tip_handled && current_tool
+                    && !isOutsideLockedWorldView(x, y)) // <FS:Steve/> no in-world tooltips over other monitors
                 {
                     current_tool->screenPointToLocal(x, y, &local_x, &local_y);
                     tool_tip_handled = current_tool->handleToolTip(local_x, local_y, mask );
@@ -4492,6 +4513,173 @@ void LLViewerWindow::updateKeyboardFocus()
     }
 }
 
+// <FS:Steve> Multi-monitor support
+namespace
+{
+    // Resize view so it lies inside screen_rect (scaled UI coords) along the chosen axes,
+    // never going outside its parent. Does nothing if it already fits exactly.
+    void fs_clamp_view_to_screen_rect(LLView* view, const LLRect& screen_rect, bool horizontal, bool vertical)
+    {
+        if (!view || !view->getParent())
+        {
+            return;
+        }
+        LLView* parent = view->getParent();
+        LLRect target;
+        parent->screenRectToLocal(screen_rect, &target);
+        target.intersectWith(parent->getLocalRect());
+        if (target.isEmpty())
+        {
+            return;
+        }
+
+        LLRect desired = view->getRect();
+        if (horizontal)
+        {
+            desired.mLeft = target.mLeft;
+            desired.mRight = target.mRight;
+        }
+        if (vertical)
+        {
+            desired.mBottom = target.mBottom;
+            desired.mTop = target.mTop;
+        }
+        if (desired != view->getRect())
+        {
+            view->setShape(desired);
+        }
+    }
+
+    LLView* fs_find_view(LLHandle<LLView>& handle, LLView* root, const std::string& name)
+    {
+        if (!handle.get() && root)
+        {
+            LLView* view = root->findChildView(name, true);
+            if (view)
+            {
+                handle = view->getHandle();
+            }
+        }
+        return handle.get();
+    }
+}
+
+LLRect LLViewerWindow::getHomeRectScaled() const
+{
+    return mMonitorLayoutActive ? mHomeRectScaled : mWindowRectScaled;
+}
+
+bool LLViewerWindow::isOutsideLockedWorldView(S32 x, S32 y) const
+{
+    return mMonitorLayoutActive
+        && !gAgentCamera.cameraMouselook()
+        && !mWorldViewRectScaled.pointInRect(x, y);
+}
+
+// Keeps the menu bar, status bar, navigation bar, toolbars, chat bar, login screen and progress
+// screen on the monitor that shows the world, and tells the floater view about that monitor so new
+// floaters open there. Floaters themselves can still be moved onto any monitor.
+void LLViewerWindow::updateMonitorLayout(bool active, const LLRect& home_rect_raw, S32 home_monitor)
+{
+    // Take the UI scale from the world monitor's DPI rather than the monitor under the window center
+    const S32 ui_scale_monitor = active ? home_monitor : -1;
+    if (ui_scale_monitor != mPreferredUIScaleMonitor && mWindow)
+    {
+        mPreferredUIScaleMonitor = ui_scale_monitor;
+        mWindow->setPreferredUIScaleMonitor(ui_scale_monitor);
+        // recalculates the display scale; the layout below follows on the next frame
+        reshape(getWindowWidthRaw(), getWindowHeightRaw());
+        return;
+    }
+
+    if (!active && !mMonitorLayoutActive)
+    {
+        return; // nothing to do, and nothing to undo
+    }
+    if (!mMainView || !mRootView)
+    {
+        return;
+    }
+
+    const LLRect full_rect = mRootView->getLocalRect();
+    LLRect home_rect = full_rect;
+    if (active)
+    {
+        home_rect = calcScaledRect(home_rect_raw, mDisplayScale);
+        home_rect.intersectWith(full_rect);
+        if (home_rect.isEmpty())
+        {
+            home_rect = full_rect;
+            active = false;
+        }
+    }
+    mMonitorLayoutActive = active;
+    mHomeRectScaled = home_rect;
+
+    // 1. Move the top of the menu/status bar stack down if the world monitor starts lower than the window
+    LLView* menu_stack = fs_find_view(mMenuStackHandle, mMainView, "menu_stack");
+    S32 top_inset = 0;
+    if (menu_stack)
+    {
+        LLRect main_rect = mMainView->getLocalRect();
+        LLRect home_in_main;
+        mMainView->screenRectToLocal(home_rect, &home_in_main);
+        S32 stack_top = llclamp(home_in_main.mTop, main_rect.mBottom + 1, main_rect.mTop);
+        top_inset = main_rect.mTop - stack_top;
+
+        LLRect desired(main_rect.mLeft, stack_top, main_rect.mRight, main_rect.mBottom);
+        if (desired != menu_stack->getRect())
+        {
+            menu_stack->setShape(desired);
+        }
+    }
+
+    // 2. Menu bar and status bar: only the width of the world monitor
+    fs_clamp_view_to_screen_rect(gStatusBar, home_rect, true, false);
+    fs_clamp_view_to_screen_rect(fs_find_view(mMenuBarHolderHandle, mMainView, "menu_bar_holder"), home_rect, true, false);
+
+    // 3. Navigation bar: same width, and moved down along with the menu bar
+    LLView* nav_bar = fs_find_view(mNavBarHandle, mMainView, "navigation_bar");
+    if (nav_bar)
+    {
+        if (top_inset != mMenuStackTopInset)
+        {
+            nav_bar->translate(0, mMenuStackTopInset - top_inset);
+        }
+        fs_clamp_view_to_screen_rect(nav_bar, home_rect, true, false);
+    }
+    mMenuStackTopInset = top_inset;
+
+    // 4. Toolbars, chat bar, minimized floaters and the floater "home" area live in the toolbar
+    //    view, so keeping its holder on the world monitor keeps all of them there
+    fs_clamp_view_to_screen_rect(fs_find_view(mToolBarViewHolderHandle, mMainView, "toolbar_view_holder"), home_rect, true, true);
+
+    // 5. Login screen and progress screen
+    fs_clamp_view_to_screen_rect(mLoginPanelHolder.get(), home_rect, true, true);
+    fs_clamp_view_to_screen_rect(fs_find_view(mProgressViewHandle, mMainView, "progress_view"), home_rect, true, true);
+    if (mProgressViewMini && mProgressViewMini->getParent())
+    {
+        // keep its size, just center it on the world monitor
+        LLRect home_in_parent;
+        mProgressViewMini->getParent()->screenRectToLocal(home_rect, &home_in_parent);
+        LLRect mini_rect = mProgressViewMini->getRect();
+        S32 new_left = home_in_parent.getCenterX() - mini_rect.getWidth() / 2;
+        if (new_left != mini_rect.mLeft)
+        {
+            mProgressViewMini->translate(new_left - mini_rect.mLeft, 0);
+        }
+    }
+
+    // 6. Floaters: open on the world monitor, but may be moved anywhere
+    if (gFloaterView)
+    {
+        LLRect home_in_floater_view;
+        gFloaterView->screenRectToLocal(home_rect, &home_in_floater_view);
+        gFloaterView->setHomeRect(active ? home_in_floater_view : LLRect());
+    }
+}
+// </FS:Steve>
+
 static LLTrace::BlockTimerStatHandle FTM_UPDATE_WORLD_VIEW("Update World View");
 void LLViewerWindow::updateWorldViewRect(bool use_full_window)
 {
@@ -4516,6 +4704,9 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
     // <FS:Steve> Multi-monitor: keep the 3D world on one monitor when the window covers several.
     // Floaters can still go anywhere in the window, so the other monitors become space for them.
     static LLCachedControl<bool> lock_world_view(gSavedSettings, "FSLockWorldViewToMonitor", false);
+    bool monitor_layout_active = false;
+    LLRect home_rect_raw;
+    S32 home_monitor = -1;
     if (lock_world_view && mWindow)
     {
         static LLCachedControl<S32> world_view_monitor(gSavedSettings, "FSWorldViewMonitor", 0);
@@ -4531,9 +4722,18 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
                 // clamp to at least a 1x1 rect so we don't try to allocate zero width gl buffers
                 new_world_rect.mTop = llmax(new_world_rect.mTop, new_world_rect.mBottom + 1);
                 new_world_rect.mRight = llmax(new_world_rect.mRight, new_world_rect.mLeft + 1);
+
+                // Only rearrange the UI if the window really reaches onto other monitors
+                if (monitor_rect != mWindowRectRaw)
+                {
+                    monitor_layout_active = true;
+                    home_rect_raw = monitor_rect;
+                    home_monitor = index;
+                }
             }
         }
     }
+    updateMonitorLayout(monitor_layout_active, home_rect_raw, home_monitor);
     // </FS:Steve>
 
     if (mWorldViewRectRaw != new_world_rect)
@@ -7324,7 +7524,10 @@ S32 LLViewerWindow::getChatConsoleBottomPad()
 
 LLRect LLViewerWindow::getChatConsoleRect()
 {
-    LLRect full_window(0, getWindowHeightScaled(), getWindowWidthScaled(), 0);
+    // <FS:Steve> Multi-monitor: keep chat text on the monitor that shows the world
+    //LLRect full_window(0, getWindowHeightScaled(), getWindowWidthScaled(), 0);
+    LLRect full_window = getHomeRectScaled();
+    // </FS:Steve>
     LLRect console_rect = full_window;
 
     const S32 CONSOLE_PADDING_TOP = 24;
@@ -7352,7 +7555,10 @@ LLRect LLViewerWindow::getChatConsoleRect()
         //console_rect.mRight  = console_rect.mLeft + 2 * getWindowWidthScaled() / 3;
         static LLCachedControl<S32> nearbyToastWidth(gSavedSettings, "NearbyToastWidth");
         F32 percentage = nearbyToastWidth / 100.0f;
-        console_rect.mRight = S32((console_rect.mRight - CONSOLE_PADDING_RIGHT ) * percentage);
+        // <FS:Steve> Multi-monitor: measure the width from the home monitor's left edge
+        //console_rect.mRight = S32((console_rect.mRight - CONSOLE_PADDING_RIGHT ) * percentage);
+        console_rect.mRight = full_window.mLeft + S32((console_rect.mRight - full_window.mLeft - CONSOLE_PADDING_RIGHT ) * percentage);
+        // </FS:Steve>
         //</AO>
     }
 

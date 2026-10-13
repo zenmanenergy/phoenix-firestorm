@@ -1462,7 +1462,8 @@ bool LLAppViewerWin32::initWindow()
 {
     // This is a workaround/hotfix for a change in Windows 11 24H2 (and possibly later)
     // Where the window width and height need to correctly reflect an available FullScreen size
-    if (gSavedSettings.getBOOL("FullScreen"))
+    if (gSavedSettings.getBOOL("FullScreen")
+        && !gSavedSettings.getBOOL("FSSpanAllMonitors")) // <FS:Steve/> span replaces fullscreen
     {
         DEVMODE dev_mode;
         ::ZeroMemory(&dev_mode, sizeof(DEVMODE));

@@ -977,7 +977,10 @@ void LLFloater::center()
         // hosted floaters can't move
         return;
     }
-    centerWithin(gFloaterView->getRect());
+    // <FS:Steve> Multi-monitor: center on the monitor showing the world, not across all of them
+    //centerWithin(gFloaterView->getRect());
+    centerWithin(gFloaterView->getHomeRect());
+    // </FS:Steve>
 }
 
 LLMultiFloater* LLFloater::getHost()
@@ -3302,7 +3305,10 @@ void LLFloaterView::adjustToFitScreen(LLFloater* floater, bool allow_partial_out
         }
     }
 
-    const LLRect& constraint = snap_in_toolbars ? getSnapRect() : gFloaterView->getRect();
+    // <FS:Steve> Multi-monitor: let floaters stay on the other monitors too
+    //const LLRect& constraint = snap_in_toolbars ? getSnapRect() : gFloaterView->getRect();
+    const LLRect constraint = snap_in_toolbars ? getConstraintRect() : gFloaterView->getRect();
+    // </FS:Steve>
     S32 min_overlap_pixels = allow_partial_outside ? FLOATER_MIN_VISIBLE_PIXELS : S32_MAX;
 
     // <FS:Ansariel> Fix floater relocation
@@ -3360,6 +3366,38 @@ LLRect LLFloaterView::getSnapRect() const
 
     return snap_rect;
 }
+
+// <FS:Steve> Multi-monitor support
+LLRect LLFloaterView::getConstraintRect() const
+{
+    LLRect constraint = getSnapRect();
+    if (mHomeRect.isEmpty())
+    {
+        return constraint;
+    }
+
+    // On every side where the home monitor stops short of this view's edge there is another
+    // monitor, so let floaters use the whole view in that direction.
+    const LLRect local = getLocalRect();
+    if (mHomeRect.mLeft > local.mLeft)
+    {
+        constraint.mLeft = local.mLeft;
+    }
+    if (mHomeRect.mRight < local.mRight)
+    {
+        constraint.mRight = local.mRight;
+    }
+    if (mHomeRect.mBottom > local.mBottom)
+    {
+        constraint.mBottom = local.mBottom;
+    }
+    if (mHomeRect.mTop < local.mTop)
+    {
+        constraint.mTop = local.mTop;
+    }
+    return constraint;
+}
+// </FS:Steve>
 
 LLFloater *LLFloaterView::getFocusedFloater() const
 {

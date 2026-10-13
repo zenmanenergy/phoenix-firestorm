@@ -196,6 +196,9 @@ public:
     // bottom-left of the client area). Index 0 is the primary monitor, the rest are ordered
     // left to right, then top to bottom. Returns false if the platform does not support it.
     virtual bool getMonitorRectsGL(std::vector<LLRect>& rects) const { return false; }
+    // Use this monitor's DPI for getSystemUISize() instead of the monitor under the window's
+    // center (index as in getMonitorRectsGL, -1 = normal behavior).
+    virtual void setPreferredUIScaleMonitor(S32 index) {}
     // </FS:Steve>
 
     static std::vector<std::string> getDynamicFallbackFontList();

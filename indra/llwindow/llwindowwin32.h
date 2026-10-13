@@ -75,6 +75,7 @@ public:
     bool setSpanAllMonitors(bool span) override;
     bool getSpanAllMonitors() const override { return mSpanningMonitors; }
     bool getMonitorRectsGL(std::vector<LLRect>& rects) const override;
+    void setPreferredUIScaleMonitor(S32 index) override { mPreferredUIScaleMonitor = index; }
     // </FS:Steve>
     bool getCursorPosition(LLCoordWindow *position) override;
     bool getCursorDelta(LLCoordCommon* delta) override;
@@ -284,6 +285,7 @@ protected:
     LONG_PTR        mPreSpanExStyle { 0 };
     // Monitor areas in GL client coordinates, refreshed by updateWindowRect() (main thread copy)
     std::vector<LLRect> mMonitorRectsGL;
+    std::atomic<S32> mPreferredUIScaleMonitor { -1 }; // monitor whose DPI sets the UI scale, -1 = default
     // </FS:Steve>
 
     void updateWindowTheme();

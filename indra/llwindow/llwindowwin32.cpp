@@ -5149,6 +5149,51 @@ void LLWindowWin32::initWatchdog()
     clearHighPerformanceGPURequest();
 }
 
+// <FS:Steve> Multi-monitor support: monitor enumeration helpers
+namespace
+{
+    struct FSMonitorEntry
+    {
+        RECT     mRect;
+        bool     mPrimary;
+        HMONITOR mMonitor;
+    };
+
+    BOOL CALLBACK fs_collect_monitors(HMONITOR monitor, HDC, LPRECT, LPARAM data)
+    {
+        MONITORINFO info;
+        info.cbSize = sizeof(MONITORINFO);
+        if (GetMonitorInfo(monitor, &info))
+        {
+            auto* monitors = reinterpret_cast<std::vector<FSMonitorEntry>*>(data);
+            monitors->push_back({ info.rcMonitor, (info.dwFlags & MONITORINFOF_PRIMARY) != 0, monitor });
+        }
+        return TRUE;
+    }
+
+    // All monitors, primary first, then left to right, then top to bottom
+    std::vector<FSMonitorEntry> fs_get_sorted_monitors()
+    {
+        std::vector<FSMonitorEntry> monitors;
+        EnumDisplayMonitors(NULL, NULL, fs_collect_monitors, reinterpret_cast<LPARAM>(&monitors));
+        std::stable_sort(monitors.begin(), monitors.end(),
+            [](const FSMonitorEntry& a, const FSMonitorEntry& b)
+            {
+                if (a.mPrimary != b.mPrimary)
+                {
+                    return a.mPrimary;
+                }
+                if (a.mRect.left != b.mRect.left)
+                {
+                    return a.mRect.left < b.mRect.left;
+                }
+                return a.mRect.top < b.mRect.top;
+            });
+        return monitors;
+    }
+}
+// </FS:Steve>
+
 F32 LLWindowWin32::getSystemUISize()
 {
     F32 scale_value = 1.f;
@@ -5181,6 +5226,18 @@ F32 LLWindowWin32::getSystemUISize()
                 pt.x = (rect.left + rect.right) / 2;
                 pt.y = (rect.top + rect.bottom) / 2;
                 hMonitor = MonitorFromPoint(pt, MONITOR_DEFAULTTONEAREST);
+                // <FS:Steve> Multi-monitor: a window across several monitors takes its UI scale
+                // from the monitor showing the 3D world rather than whatever is under its center
+                const S32 preferred_monitor = mPreferredUIScaleMonitor;
+                if (preferred_monitor >= 0)
+                {
+                    const std::vector<FSMonitorEntry> monitors = fs_get_sorted_monitors();
+                    if (preferred_monitor < (S32)monitors.size())
+                    {
+                        hMonitor = monitors[preferred_monitor].mMonitor;
+                    }
+                }
+                // </FS:Steve>
                 hr = pGDFM(hMonitor, MDT_EFFECTIVE_DPI, &dpix, &dpiy);
                 if (hr == S_OK)
                 {
@@ -5654,27 +5711,6 @@ void LLWindowWin32::updateWindowRect()
 }
 
 // <FS:Steve> Multi-monitor support
-namespace
-{
-    struct FSMonitorEntry
-    {
-        RECT mRect;
-        bool mPrimary;
-    };
-
-    BOOL CALLBACK fs_collect_monitors(HMONITOR monitor, HDC, LPRECT, LPARAM data)
-    {
-        MONITORINFO info;
-        info.cbSize = sizeof(MONITORINFO);
-        if (GetMonitorInfo(monitor, &info))
-        {
-            auto* monitors = reinterpret_cast<std::vector<FSMonitorEntry>*>(data);
-            monitors->push_back({ info.rcMonitor, (info.dwFlags & MONITORINFOF_PRIMARY) != 0 });
-        }
-        return TRUE;
-    }
-}
-
 // static
 // Called from the window thread. Returns each monitor's rect in GL client coordinates
 // (origin bottom-left of the client area), primary monitor first, then left to right.
@@ -5682,26 +5718,11 @@ std::vector<LLRect> LLWindowWin32::computeMonitorRectsGL(HWND window, const RECT
 {
     std::vector<LLRect> result;
 
-    std::vector<FSMonitorEntry> monitors;
-    EnumDisplayMonitors(NULL, NULL, fs_collect_monitors, reinterpret_cast<LPARAM>(&monitors));
+    const std::vector<FSMonitorEntry> monitors = fs_get_sorted_monitors();
     if (monitors.empty())
     {
         return result;
     }
-
-    std::stable_sort(monitors.begin(), monitors.end(),
-        [](const FSMonitorEntry& a, const FSMonitorEntry& b)
-        {
-            if (a.mPrimary != b.mPrimary)
-            {
-                return a.mPrimary;
-            }
-            if (a.mRect.left != b.mRect.left)
-            {
-                return a.mRect.left < b.mRect.left;
-            }
-            return a.mRect.top < b.mRect.top;
-        });
 
     // Screen position of the client area's top-left corner
     POINT origin = { 0, 0 };

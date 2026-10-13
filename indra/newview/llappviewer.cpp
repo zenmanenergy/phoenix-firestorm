@@ -3770,7 +3770,10 @@ bool LLAppViewer::initWindow()
         // this setting on mac.
         .fullscreen(false)
 #else // LL_DARWIN
-        .fullscreen(gSavedSettings.getBOOL("FullScreen"))
+        // <FS:Steve> Multi-monitor: stretching across all monitors replaces fullscreen
+        //.fullscreen(gSavedSettings.getBOOL("FullScreen"))
+        .fullscreen(gSavedSettings.getBOOL("FullScreen") && !gSavedSettings.getBOOL("FSSpanAllMonitors"))
+        // </FS:Steve>
 #endif
         .ignore_pixel_depth(ignorePixelDepth)
         .first_run(mIsFirstRun);
@@ -3910,7 +3913,7 @@ bool LLAppViewer::initWindow()
     }
 
     // <FS:Steve> Multi-monitor: stretch the window across all monitors if requested
-    if (gSavedSettings.getBOOL("FSSpanAllMonitors") && !gSavedSettings.getBOOL("FullScreen"))
+    if (gSavedSettings.getBOOL("FSSpanAllMonitors"))
     {
         gViewerWindow->getWindow()->setSpanAllMonitors(true);
     }

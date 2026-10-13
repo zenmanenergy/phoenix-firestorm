@@ -1271,9 +1271,14 @@ static bool handleSDL2IMEEnabledChanged(const LLSD& newvalue)
 // <FS:Steve> Multi-monitor: stretch or un-stretch the window across all monitors
 static void handleSpanAllMonitorsChanged(const LLSD& newvalue)
 {
-    if (gViewerWindow && gViewerWindow->getWindow() && !gSavedSettings.getBOOL("FullScreen"))
+    if (gViewerWindow && gViewerWindow->getWindow())
     {
-        gViewerWindow->getWindow()->setSpanAllMonitors(newvalue.asBoolean());
+        // In a fullscreen session this can't change on the fly; the window is created stretched
+        // (instead of fullscreen) on the next start.
+        if (!gViewerWindow->getWindow()->setSpanAllMonitors(newvalue.asBoolean()) && newvalue.asBoolean())
+        {
+            LL_INFOS("Window") << "Stretching across monitors will take effect after a restart" << LL_ENDL;
+        }
     }
 }
 // </FS:Steve>

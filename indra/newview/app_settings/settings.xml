@@ -25100,7 +25100,7 @@ Change of this parameter will affect the layout of buttons in notification toast
     <key>FSSpanAllMonitors</key>
     <map>
       <key>Comment</key>
-      <string>Stretch the viewer window as a borderless window across all monitors (Windows only). Use with FSLockWorldViewToMonitor so the 3D world stays on one monitor and floaters can be moved to the others.</string>
+      <string>Stretch the viewer window as a borderless window across all monitors (Windows only). Use with FSLockWorldViewToMonitor so the 3D world stays on one monitor and floaters can be moved to the others. Takes precedence over FullScreen.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>
@@ -25111,7 +25111,7 @@ Change of this parameter will affect the layout of buttons in notification toast
     <key>FSLockWorldViewToMonitor</key>
     <map>
       <key>Comment</key>
-      <string>Draw the 3D world only on the monitor chosen by FSWorldViewMonitor, even if the viewer window covers several monitors. Floaters can still be placed anywhere in the window.</string>
+      <string>Draw the 3D world only on the monitor chosen by FSWorldViewMonitor, even if the viewer window covers several monitors. The menu bar, status bar, toolbars, chat and login screen stay on that monitor too; floaters open there but can be moved anywhere in the window, and the UI scale follows that monitor.</string>
       <key>Persist</key>
       <integer>1</integer>
       <key>Type</key>

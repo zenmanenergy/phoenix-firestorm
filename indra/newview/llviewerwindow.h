@@ -346,6 +346,13 @@ public:
     void                updateKeyboardFocus();
 
     void            updateWorldViewRect(bool use_full_window=false);
+    // <FS:Steve> Multi-monitor support
+    void            updateMonitorLayout(bool active, const LLRect& home_rect_raw, S32 home_monitor);
+    // true if (x, y) (scaled UI coords) is on another monitor while the world is locked to one
+    bool            isOutsideLockedWorldView(S32 x, S32 y) const;
+    // UI area of the monitor showing the world (scaled UI coords), or the whole window
+    LLRect          getHomeRectScaled() const;
+    // </FS:Steve>
     LLView*         getToolBarHolder() { return mToolBarHolder.get(); }
     LLView*         getHintHolder() { return mHintHolder.get(); }
     LLView*         getLoginPanelHolder() { return mLoginPanelHolder.get(); }
@@ -515,6 +522,17 @@ private:
     LLRect          mWindowRectScaled;          // whole window, scaled by UI size
     LLRect          mWorldViewRectRaw;          // area of screen for 3D world
     LLRect          mWorldViewRectScaled;       // area of screen for 3D world scaled by UI size
+    // <FS:Steve> Multi-monitor support
+    bool            mMonitorLayoutActive = false;   // UI is being kept on one monitor of a multi-monitor window
+    LLRect          mHomeRectScaled;                // that monitor's area, scaled UI coords
+    S32             mPreferredUIScaleMonitor = -1;  // monitor whose DPI sets the UI scale
+    S32             mMenuStackTopInset = 0;         // how far the menu/status bar was moved down
+    LLHandle<LLView> mMenuStackHandle;
+    LLHandle<LLView> mMenuBarHolderHandle;
+    LLHandle<LLView> mNavBarHandle;
+    LLHandle<LLView> mToolBarViewHolderHandle;
+    LLHandle<LLView> mProgressViewHandle;
+    // </FS:Steve>
     LLRootView*     mRootView;                  // a view of size mWindowRectRaw, containing all child views
     MainPanel*      mMainView;                  // a view of size mWindowRectRaw, directly containing the base elements of the ui tree
     LLView*         mFloaterSnapRegion = nullptr;

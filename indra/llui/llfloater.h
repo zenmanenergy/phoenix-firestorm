@@ -641,6 +641,16 @@ public:
     S32 getZOrder(LLFloater* child);
 
     void setFloaterSnapView(LLHandle<LLView> snap_view) {mSnapView = snap_view; }
+
+    // <FS:Steve> Multi-monitor support
+    // home_rect is the part of this view (local coords) on the monitor that shows the 3D world.
+    // An empty rect turns the multi-monitor behavior off.
+    void setHomeRect(const LLRect& home_rect) { mHomeRect = home_rect; }
+    // Where new floaters are centered: the home monitor, or the whole view when not in use.
+    LLRect getHomeRect() const { return mHomeRect.notEmpty() ? mHomeRect : getRect(); }
+    // Where floaters may be kept: the snap rect, widened to cover the other monitors.
+    LLRect getConstraintRect() const;
+    // </FS:Steve>
     LLFloater* getFrontmostClosableFloater();
 
     // <FS:KC> Fix for bad edge snapping
@@ -663,6 +673,7 @@ private:
     void hiddenFloaterClosed(LLFloater* floater);
 
     LLRect              mLastSnapRect;
+    LLRect              mHomeRect; // <FS:Steve/> multi-monitor home area, empty when off
     LLRect              mToolbarLeftRect;
     LLRect              mToolbarBottomRect;
     LLRect              mToolbarRightRect;
