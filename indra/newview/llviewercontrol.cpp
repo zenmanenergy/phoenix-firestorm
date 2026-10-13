@@ -1268,6 +1268,16 @@ static bool handleSDL2IMEEnabledChanged(const LLSD& newvalue)
 #endif
 // </FS:Zi>
 
+// <FS:Steve> Multi-monitor: stretch or un-stretch the window across all monitors
+static void handleSpanAllMonitorsChanged(const LLSD& newvalue)
+{
+    if (gViewerWindow && gViewerWindow->getWindow() && !gSavedSettings.getBOOL("FullScreen"))
+    {
+        gViewerWindow->getWindow()->setSpanAllMonitors(newvalue.asBoolean());
+    }
+}
+// </FS:Steve>
+
 ////////////////////////////////////////////////////////////////////////////
 
 LLPointer<LLControlVariable> setting_get_control(LLControlGroup& group, const std::string& setting)
@@ -1584,6 +1594,10 @@ void settings_setup_listeners()
     setting_setup_signal_listener(gSavedSettings, "FSDiskCacheHighWaterPercent", handleDiskCacheHighWaterPctChanged);
     setting_setup_signal_listener(gSavedSettings, "FSDiskCacheLowWaterPercent", handleDiskCacheLowWaterPctChanged);
     // </FS:Beq>
+
+    // <FS:Steve> Multi-monitor support
+    setting_setup_signal_listener(gSavedSettings, "FSSpanAllMonitors", handleSpanAllMonitorsChanged);
+    // </FS:Steve>
 
     // <FS:Zi> Handle IME text input getting enabled or disabled
 #if LL_SDL2

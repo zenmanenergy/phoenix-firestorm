@@ -2807,11 +2807,16 @@ void LLViewerWindow::reshape(S32 width, S32 height)
 
         // store new settings for the mode we are in, regardless
         bool maximized = mWindow->getMaximized();
+        // <FS:Steve> Multi-monitor: don't remember the spanned size as the normal window size
+        const bool spanning = mWindow->getSpanAllMonitors();
+        if (!spanning)
+        // </FS:Steve>
         gSavedSettings.setBOOL("WindowMaximized", maximized);
 
 //<FS:KC - fix for EXP-1777/EXP-1832>
         LLCoordScreen window_size;
         if (!maximized
+            && !spanning // <FS:Steve/>
             && mWindow->getSize(&window_size))
 //      if (!maximized)
 //</FS:KC - fix for EXP-1777/EXP-1832>
@@ -4507,6 +4512,29 @@ void LLViewerWindow::updateWorldViewRect(bool use_full_window)
         new_world_rect.mBottom = ll_round((F32)new_world_rect.mBottom * mDisplayScale.mV[VY]);
         new_world_rect.mTop = ll_round((F32)new_world_rect.mTop * mDisplayScale.mV[VY]);
     }
+
+    // <FS:Steve> Multi-monitor: keep the 3D world on one monitor when the window covers several.
+    // Floaters can still go anywhere in the window, so the other monitors become space for them.
+    static LLCachedControl<bool> lock_world_view(gSavedSettings, "FSLockWorldViewToMonitor", false);
+    if (lock_world_view && mWindow)
+    {
+        static LLCachedControl<S32> world_view_monitor(gSavedSettings, "FSWorldViewMonitor", 0);
+        static std::vector<LLRect> monitor_rects;
+        if (mWindow->getMonitorRectsGL(monitor_rects))
+        {
+            S32 index = llclamp((S32)world_view_monitor, 0, (S32)monitor_rects.size() - 1);
+            LLRect monitor_rect = monitor_rects[index];
+            monitor_rect.intersectWith(mWindowRectRaw); // only the part of that monitor inside our window
+            if (monitor_rect.notEmpty())
+            {
+                new_world_rect.intersectWith(monitor_rect);
+                // clamp to at least a 1x1 rect so we don't try to allocate zero width gl buffers
+                new_world_rect.mTop = llmax(new_world_rect.mTop, new_world_rect.mBottom + 1);
+                new_world_rect.mRight = llmax(new_world_rect.mRight, new_world_rect.mLeft + 1);
+            }
+        }
+    }
+    // </FS:Steve>
 
     if (mWorldViewRectRaw != new_world_rect)
     {

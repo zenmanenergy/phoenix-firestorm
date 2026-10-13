@@ -667,6 +667,35 @@
              function="View.EnableHUDAttachments" />
          </menu_item_check>
 
+         <!-- <FS:Steve> Multi-monitor support -->
+         <menu
+          create_jump_keys="true"
+          label="Multiple Monitors"
+          name="Multiple Monitors"
+          tear_off="true">
+            <menu_item_check
+             label="Stretch Window Across All Monitors"
+             name="FSSpanAllMonitors">
+                <menu_item_check.on_check
+                 function="CheckControl"
+                 parameter="FSSpanAllMonitors" />
+                <menu_item_check.on_click
+                 function="ToggleControl"
+                 parameter="FSSpanAllMonitors" />
+            </menu_item_check>
+            <menu_item_check
+             label="Keep World View on One Monitor"
+             name="FSLockWorldViewToMonitor">
+                <menu_item_check.on_check
+                 function="CheckControl"
+                 parameter="FSLockWorldViewToMonitor" />
+                <menu_item_check.on_click
+                 function="ToggleControl"
+                 parameter="FSLockWorldViewToMonitor" />
+            </menu_item_check>
+         </menu>
+         <!-- </FS:Steve> -->
+
          <menu_item_check
          label="Show User Interface"
          name="Show User Interface"

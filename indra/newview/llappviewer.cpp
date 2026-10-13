@@ -3909,6 +3909,13 @@ bool LLAppViewer::initWindow()
         gViewerWindow->getWindow()->maximize();
     }
 
+    // <FS:Steve> Multi-monitor: stretch the window across all monitors if requested
+    if (gSavedSettings.getBOOL("FSSpanAllMonitors") && !gSavedSettings.getBOOL("FullScreen"))
+    {
+        gViewerWindow->getWindow()->setSpanAllMonitors(true);
+    }
+    // </FS:Steve>
+
     LLUI::getInstance()->mWindow = gViewerWindow->getWindow();
 
     // Show watch cursor
@@ -4451,7 +4458,8 @@ void LLAppViewer::cleanupSavedSettings()
     if(NULL != gViewerWindow)
     {
         bool maximized = gViewerWindow->getWindow()->getMaximized();
-        if (!maximized)
+        if (!maximized
+            && !gViewerWindow->getWindow()->getSpanAllMonitors()) // <FS:Steve/> keep the normal position
         {
             LLCoordScreen window_pos;
 

@@ -34,6 +34,8 @@
 #include "llinstancetracker.h"
 #include "llsd.h"
 
+#include <vector> // <FS:Steve/> getMonitorRectsGL
+
 class LLSplashScreen;
 class LLPreeditor;
 class LLWindowCallbacks;
@@ -184,6 +186,17 @@ public:
     virtual void interruptLanguageTextInput() {}
     virtual void spawnWebBrowser(const std::string& escaped_url, bool async) {};
     virtual void openFile(const std::string& file_name) {};
+
+    // <FS:Steve> Multi-monitor support
+    // Stretch the window as a borderless window across the bounding box of all monitors,
+    // or put it back the way it was. Returns false if the platform does not support it.
+    virtual bool setSpanAllMonitors(bool span) { return false; }
+    virtual bool getSpanAllMonitors() const { return false; }
+    // Fills rects with each monitor's area in GL window coordinates (raw pixels, origin at the
+    // bottom-left of the client area). Index 0 is the primary monitor, the rest are ordered
+    // left to right, then top to bottom. Returns false if the platform does not support it.
+    virtual bool getMonitorRectsGL(std::vector<LLRect>& rects) const { return false; }
+    // </FS:Steve>
 
     static std::vector<std::string> getDynamicFallbackFontList();
 

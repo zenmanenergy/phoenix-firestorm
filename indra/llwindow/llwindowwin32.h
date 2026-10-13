@@ -38,6 +38,9 @@
 #include "llmutex.h"
 #include "workqueue.h"
 
+#include <atomic> // <FS:Steve/> mSpanningMonitors
+#include <vector>
+
 // Hack for async host by name
 #define LL_WM_HOST_RESOLVED      (WM_APP + 1)
 typedef void (*LLW32MsgCallback)(const MSG &msg);
@@ -68,6 +71,11 @@ public:
     void destroySharedContext(void* context) override;
     void toggleVSync(bool enable_vsync) override;
     bool setCursorPosition(LLCoordWindow position) override;
+    // <FS:Steve> Multi-monitor support
+    bool setSpanAllMonitors(bool span) override;
+    bool getSpanAllMonitors() const override { return mSpanningMonitors; }
+    bool getMonitorRectsGL(std::vector<LLRect>& rects) const override;
+    // </FS:Steve>
     bool getCursorPosition(LLCoordWindow *position) override;
     bool getCursorDelta(LLCoordCommon* delta) override;
     bool isWrapMouse() const override { return !mAbsoluteCursorPosition; };
@@ -263,8 +271,20 @@ protected:
 
     // Cached values of GetWindowRect and GetClientRect to be used by app thread
     void updateWindowRect();
+    static std::vector<LLRect> computeMonitorRectsGL(HWND window, const RECT& client_rect); // <FS:Steve/>
     RECT mRect;
     RECT mClientRect;
+
+    // <FS:Steve> Multi-monitor support
+    std::atomic<bool> mSpanningMonitors { false };  // set on main thread, read on both
+    // Window state saved before spanning so it can be restored (window thread only)
+    WINDOWPLACEMENT mPreSpanPlacement {};
+    bool            mHavePreSpanPlacement { false };
+    LONG_PTR        mPreSpanStyle { 0 };
+    LONG_PTR        mPreSpanExStyle { 0 };
+    // Monitor areas in GL client coordinates, refreshed by updateWindowRect() (main thread copy)
+    std::vector<LLRect> mMonitorRectsGL;
+    // </FS:Steve>
 
     void updateWindowTheme();
     bool isSystemAppDarkMode();

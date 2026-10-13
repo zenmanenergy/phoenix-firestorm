@@ -64,6 +64,7 @@
 #include <future>
 #include <sstream>
 #include <utility>                  // std::pair
+#include <algorithm>                // <FS:Steve/> std::stable_sort
 
 #include <d3d9.h>
 #include <d3d11.h>
@@ -3183,6 +3184,17 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
             LPMINMAXINFO min_max = (LPMINMAXINFO)l_param;
             min_max->ptMinTrackSize.x = window_imp->mMinWindowWidth;
             min_max->ptMinTrackSize.y = window_imp->mMinWindowHeight;
+            // <FS:Steve> Multi-monitor: allow the window to be as big as the whole virtual desktop
+            if (window_imp->mSpanningMonitors)
+            {
+                const LONG virtual_width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+                const LONG virtual_height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+                min_max->ptMaxTrackSize.x = llmax(min_max->ptMaxTrackSize.x, virtual_width);
+                min_max->ptMaxTrackSize.y = llmax(min_max->ptMaxTrackSize.y, virtual_height);
+                min_max->ptMaxSize.x = llmax(min_max->ptMaxSize.x, virtual_width);
+                min_max->ptMaxSize.y = llmax(min_max->ptMaxSize.y, virtual_height);
+            }
+            // </FS:Steve>
             return 0;
         }
 
@@ -3259,6 +3271,10 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
             S32 new_height = lprc_new_scale->bottom - lprc_new_scale->top;
             WINDOW_IMP_POST(window_imp->mCallbacks->handleDPIChanged(window_imp, new_scale, new_width, new_height));
 
+            // <FS:Steve> Multi-monitor: Windows suggests a rect on a single monitor, which would
+            // undo the span. Keep the spanned size and only apply the new UI scale.
+            if (!window_imp->mSpanningMonitors)
+            // </FS:Steve>
             SetWindowPos(h_wnd,
                 HWND_TOP,
                 lprc_new_scale->left,
@@ -3273,6 +3289,7 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
         case WM_DISPLAYCHANGE:
         {
             window_imp->mWindowThread->pingWindowTimeout("WM_DISPLAYCHANGE");
+            window_imp->updateWindowRect(); // <FS:Steve/> refresh cached monitor layout
             WINDOW_IMP_POST(window_imp->mCallbacks->handleDisplayChanged());
             break;
         }
@@ -5624,13 +5641,169 @@ void LLWindowWin32::updateWindowRect()
     if (GetWindowRect(mWindowHandle, &rect) &&
         GetClientRect(mWindowHandle, &client_rect))
     {
+        // <FS:Steve> Multi-monitor: work out where each monitor sits inside our client area
+        std::vector<LLRect> monitor_rects_gl = computeMonitorRectsGL(mWindowHandle, client_rect);
+        // </FS:Steve>
         post([=]
             {
                 mRect = rect;
                 mClientRect = client_rect;
+                mMonitorRectsGL = monitor_rects_gl; // <FS:Steve/>
             });
     }
 }
+
+// <FS:Steve> Multi-monitor support
+namespace
+{
+    struct FSMonitorEntry
+    {
+        RECT mRect;
+        bool mPrimary;
+    };
+
+    BOOL CALLBACK fs_collect_monitors(HMONITOR monitor, HDC, LPRECT, LPARAM data)
+    {
+        MONITORINFO info;
+        info.cbSize = sizeof(MONITORINFO);
+        if (GetMonitorInfo(monitor, &info))
+        {
+            auto* monitors = reinterpret_cast<std::vector<FSMonitorEntry>*>(data);
+            monitors->push_back({ info.rcMonitor, (info.dwFlags & MONITORINFOF_PRIMARY) != 0 });
+        }
+        return TRUE;
+    }
+}
+
+// static
+// Called from the window thread. Returns each monitor's rect in GL client coordinates
+// (origin bottom-left of the client area), primary monitor first, then left to right.
+std::vector<LLRect> LLWindowWin32::computeMonitorRectsGL(HWND window, const RECT& client_rect)
+{
+    std::vector<LLRect> result;
+
+    std::vector<FSMonitorEntry> monitors;
+    EnumDisplayMonitors(NULL, NULL, fs_collect_monitors, reinterpret_cast<LPARAM>(&monitors));
+    if (monitors.empty())
+    {
+        return result;
+    }
+
+    std::stable_sort(monitors.begin(), monitors.end(),
+        [](const FSMonitorEntry& a, const FSMonitorEntry& b)
+        {
+            if (a.mPrimary != b.mPrimary)
+            {
+                return a.mPrimary;
+            }
+            if (a.mRect.left != b.mRect.left)
+            {
+                return a.mRect.left < b.mRect.left;
+            }
+            return a.mRect.top < b.mRect.top;
+        });
+
+    // Screen position of the client area's top-left corner
+    POINT origin = { 0, 0 };
+    if (!ClientToScreen(window, &origin))
+    {
+        return result;
+    }
+    const S32 client_height = client_rect.bottom - client_rect.top;
+
+    for (const FSMonitorEntry& monitor : monitors)
+    {
+        const S32 left = monitor.mRect.left - origin.x;
+        const S32 right = monitor.mRect.right - origin.x;
+        const S32 top_win = monitor.mRect.top - origin.y;       // window coords, y down
+        const S32 bottom_win = monitor.mRect.bottom - origin.y;
+        // LLRect(left, top, right, bottom) in GL coords, y up
+        result.emplace_back(left, client_height - top_win, right, client_height - bottom_win);
+    }
+    return result;
+}
+
+bool LLWindowWin32::getMonitorRectsGL(std::vector<LLRect>& rects) const
+{
+    // main thread
+    rects = mMonitorRectsGL;
+    return !rects.empty();
+}
+
+bool LLWindowWin32::setSpanAllMonitors(bool span)
+{
+    // main thread
+    if (!mWindowHandle || mFullscreen)
+    {
+        return false;
+    }
+    if (span == mSpanningMonitors)
+    {
+        return true;
+    }
+    mSpanningMonitors = span;
+
+    mWindowThread->post([=]()
+        {
+            if (span)
+            {
+                // Remember how the window looked so we can put it back later
+                mPreSpanPlacement.length = sizeof(WINDOWPLACEMENT);
+                mHavePreSpanPlacement = GetWindowPlacement(mWindowHandle, &mPreSpanPlacement);
+                mPreSpanStyle = GetWindowLongPtr(mWindowHandle, GWL_STYLE);
+                mPreSpanExStyle = GetWindowLongPtr(mWindowHandle, GWL_EXSTYLE);
+
+                // A maximized window is pinned to one monitor, so un-maximize first
+                if (IsZoomed(mWindowHandle))
+                {
+                    ShowWindow(mWindowHandle, SW_RESTORE);
+                }
+
+                // Borderless, covering the bounding box of every monitor
+                const int x = GetSystemMetrics(SM_XVIRTUALSCREEN);
+                const int y = GetSystemMetrics(SM_YVIRTUALSCREEN);
+                const int width = GetSystemMetrics(SM_CXVIRTUALSCREEN);
+                const int height = GetSystemMetrics(SM_CYVIRTUALSCREEN);
+
+                LONG_PTR style = mPreSpanStyle;
+                style &= ~(WS_OVERLAPPEDWINDOW | WS_MAXIMIZE | WS_MINIMIZE);
+                style |= WS_POPUP | WS_VISIBLE;
+                LONG_PTR ex_style = mPreSpanExStyle;
+                ex_style &= ~(WS_EX_WINDOWEDGE | WS_EX_CLIENTEDGE | WS_EX_DLGMODALFRAME | WS_EX_STATICEDGE);
+
+                SetWindowLongPtr(mWindowHandle, GWL_STYLE, style);
+                SetWindowLongPtr(mWindowHandle, GWL_EXSTYLE, ex_style);
+                SetWindowPos(mWindowHandle, HWND_TOP, x, y, width, height,
+                    SWP_FRAMECHANGED | SWP_NOOWNERZORDER | SWP_SHOWWINDOW);
+
+                LL_INFOS("Window") << "Spanning window across all monitors: " << width << "x" << height
+                                   << " at " << x << "," << y << LL_ENDL;
+            }
+            else
+            {
+                // Restore the frame, then the old position/size/maximized state
+                LONG_PTR style = mPreSpanStyle ? mPreSpanStyle : (LONG_PTR)(WS_OVERLAPPEDWINDOW | WS_VISIBLE);
+                style &= ~(WS_MAXIMIZE | WS_MINIMIZE); // SetWindowPlacement handles maximize
+                SetWindowLongPtr(mWindowHandle, GWL_STYLE, style);
+                if (mPreSpanExStyle)
+                {
+                    SetWindowLongPtr(mWindowHandle, GWL_EXSTYLE, mPreSpanExStyle);
+                }
+                SetWindowPos(mWindowHandle, NULL, 0, 0, 0, 0,
+                    SWP_FRAMECHANGED | SWP_NOMOVE | SWP_NOSIZE | SWP_NOZORDER | SWP_NOOWNERZORDER);
+                if (mHavePreSpanPlacement)
+                {
+                    SetWindowPlacement(mWindowHandle, &mPreSpanPlacement);
+                }
+
+                LL_INFOS("Window") << "Stopped spanning window across monitors" << LL_ENDL;
+            }
+            updateWindowRect();
+        });
+
+    return true;
+}
+// </FS:Steve>
 
 bool LLWindowWin32::isSystemAppDarkMode()
 {
