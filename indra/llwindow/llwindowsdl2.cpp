@@ -49,6 +49,8 @@ extern LLControlGroup gSavedSettings;
 #include <glib.h>
 #endif
 
+#include <algorithm> // <FS:Steve/> std::stable_sort
+
 extern "C" {
 # include "fontconfig/fontconfig.h"
 }
@@ -1155,6 +1157,120 @@ bool LLWindowSDL::setSizeImpl(const LLCoordWindow size)
 {
     return ::setSizeImpl( size, mWindow );
 }
+
+// <FS:Steve> Multi-monitor support
+namespace
+{
+    // Bounds of every display in SDL screen coordinates, primary (display 0) first,
+    // the rest ordered left to right, then top to bottom.
+    std::vector<SDL_Rect> fs_get_display_bounds()
+    {
+        std::vector<SDL_Rect> displays;
+        const int count = SDL_GetNumVideoDisplays();
+        for (int i = 0; i < count; ++i)
+        {
+            SDL_Rect bounds;
+            if (SDL_GetDisplayBounds(i, &bounds) == 0)
+            {
+                displays.push_back(bounds);
+            }
+        }
+        if (displays.size() > 2)
+        {
+            std::stable_sort(displays.begin() + 1, displays.end(),
+                [](const SDL_Rect& a, const SDL_Rect& b)
+                {
+                    return (a.x != b.x) ? (a.x < b.x) : (a.y < b.y);
+                });
+        }
+        return displays;
+    }
+}
+
+bool LLWindowSDL::getMonitorRectsGL(std::vector<LLRect>& rects) const
+{
+    rects.clear();
+    if (!mWindow)
+    {
+        return false;
+    }
+
+    int win_x = 0, win_y = 0, win_width = 0, win_height = 0;
+    SDL_GetWindowPosition(mWindow, &win_x, &win_y);   // top-left of the client area
+    SDL_GetWindowSize(mWindow, &win_width, &win_height);
+
+    for (const SDL_Rect& display : fs_get_display_bounds())
+    {
+        const S32 left = display.x - win_x;
+        const S32 right = left + display.w;
+        const S32 top_win = display.y - win_y;            // window coords, y down
+        const S32 bottom_win = top_win + display.h;
+        // LLRect(left, top, right, bottom) in GL coords, y up
+        rects.emplace_back(left, win_height - top_win, right, win_height - bottom_win);
+    }
+    return !rects.empty();
+}
+
+bool LLWindowSDL::setSpanAllMonitors(bool span)
+{
+    if (!mWindow || mFullscreen)
+    {
+        return false;
+    }
+    if (span == mSpanningMonitors)
+    {
+        return true;
+    }
+
+    if (span)
+    {
+        const std::vector<SDL_Rect> displays = fs_get_display_bounds();
+        if (displays.empty())
+        {
+            return false;
+        }
+
+        // Remember how the window looked so we can put it back later
+        mPreSpanMaximized = (SDL_GetWindowFlags(mWindow) & SDL_WINDOW_MAXIMIZED) != 0;
+        if (mPreSpanMaximized)
+        {
+            // A maximized window is pinned to one monitor
+            SDL_RestoreWindow(mWindow);
+        }
+        SDL_GetWindowPosition(mWindow, &mPreSpanX, &mPreSpanY);
+        SDL_GetWindowSize(mWindow, &mPreSpanWidth, &mPreSpanHeight);
+
+        // Bounding box of every display
+        SDL_Rect span_rect = displays[0];
+        for (const SDL_Rect& display : displays)
+        {
+            SDL_UnionRect(&span_rect, &display, &span_rect);
+        }
+
+        mSpanningMonitors = true;
+        SDL_SetWindowBordered(mWindow, SDL_FALSE);
+        SDL_SetWindowPosition(mWindow, span_rect.x, span_rect.y);
+        ::setSizeImpl(LLCoordScreen(span_rect.w, span_rect.h), mWindow);
+
+        LL_INFOS("Window") << "Spanning window across all monitors: " << span_rect.w << "x" << span_rect.h
+                           << " at " << span_rect.x << "," << span_rect.y << LL_ENDL;
+    }
+    else
+    {
+        mSpanningMonitors = false;
+        SDL_SetWindowBordered(mWindow, SDL_TRUE);
+        SDL_SetWindowPosition(mWindow, mPreSpanX, mPreSpanY);
+        ::setSizeImpl(LLCoordScreen(mPreSpanWidth, mPreSpanHeight), mWindow);
+        if (mPreSpanMaximized)
+        {
+            SDL_MaximizeWindow(mWindow);
+        }
+
+        LL_INFOS("Window") << "Stopped spanning window across monitors" << LL_ENDL;
+    }
+    return true;
+}
+// </FS:Steve>
 
 
 void LLWindowSDL::swapBuffers()

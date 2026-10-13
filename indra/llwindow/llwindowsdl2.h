@@ -133,6 +133,12 @@ public:
     /*virtual*/ void setLanguageTextInput(const LLCoordGL& pos);
 
     /*virtual*/ void spawnWebBrowser(const std::string& escaped_url, bool async);
+
+    // <FS:Steve> Multi-monitor support
+    bool setSpanAllMonitors(bool span) override;
+    bool getSpanAllMonitors() const override { return mSpanningMonitors; }
+    bool getMonitorRectsGL(std::vector<LLRect>& rects) const override;
+    // </FS:Steve>
     /*virtual*/ void openFile(const std::string& file_name);
 
         /*virtual*/ void setTitle(const std::string& title);
@@ -237,6 +243,15 @@ private:
     std::string mInputType;
 
     bool mUseLegacyCursors; // <FS:LO> Legacy cursor setting from main program
+
+    // <FS:Steve> Multi-monitor support: window state saved before spanning
+    bool mSpanningMonitors { false };
+    int  mPreSpanX { 0 };
+    int  mPreSpanY { 0 };
+    int  mPreSpanWidth { 0 };
+    int  mPreSpanHeight { 0 };
+    bool mPreSpanMaximized { false };
+    // </FS:Steve>
 
 public:
 #if LL_X11
