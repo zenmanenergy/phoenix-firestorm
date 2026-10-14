@@ -4581,6 +4581,27 @@ bool LLViewerWindow::isOutsideLockedWorldView(S32 x, S32 y) const
 // floaters open there. Floaters themselves can still be moved onto any monitor.
 void LLViewerWindow::updateMonitorLayout(bool active, const LLRect& home_rect_raw, S32 home_monitor)
 {
+    // Floaters keep separate positions for the multi-monitor and single-monitor layouts.
+    // Switch a few frames after the layout settles, so toolbars and the floater area have
+    // already been resized when the floaters are moved.
+    if (gFloaterView && active != LLFloater::getMultiMonitorProfile())
+    {
+        if (mPendingFloaterProfile != (S32)active)
+        {
+            mPendingFloaterProfile = (S32)active;
+            mPendingProfileFrames = 0;
+        }
+        else if (++mPendingProfileFrames >= 5)
+        {
+            LLFloater::setMultiMonitorProfile(active);
+            mPendingFloaterProfile = -1;
+        }
+    }
+    else
+    {
+        mPendingFloaterProfile = -1;
+    }
+
     // Take the UI scale from the world monitor's DPI rather than the monitor under the window center
     const S32 ui_scale_monitor = active ? home_monitor : -1;
     if (ui_scale_monitor != mPreferredUIScaleMonitor && mWindow)

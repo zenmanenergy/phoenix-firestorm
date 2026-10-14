@@ -2089,12 +2089,85 @@ void LLFloater::onClickSnooze(LLFloater* self)
 }
 // </FS:Ansariel>
 
+// <FS:Steve> Multi-monitor support
+bool LLFloater::sMultiMonitorProfile = false;
+
+// static
+void LLFloater::setMultiMonitorProfile(bool multi_monitor)
+{
+    if (multi_monitor == sMultiMonitorProfile)
+    {
+        return;
+    }
+
+    // Floaters that are open on their own (not docked into another floater or minimized)
+    auto is_movable = [](LLFloater* floater)
+    {
+        return floater->mSaveRect
+            && floater->getVisible()
+            && !floater->isMinimized()
+            && !floater->getHost()
+            && gFloaterView
+            && floater->getParent() == gFloaterView;
+    };
+
+    // 1. Remember where open floaters are in the layout we are leaving
+    for (auto& floater : instance_snapshot())
+    {
+        if (is_movable(&floater))
+        {
+            floater.storeRectControl();
+        }
+    }
+
+    sMultiMonitorProfile = multi_monitor;
+    LL_INFOS("Window") << "Floater positions now use the " << (multi_monitor ? "multi-monitor" : "single-monitor") << " layout" << LL_ENDL;
+
+    // 2. Switch every floater to the position settings of the new layout, and move open ones
+    for (auto& floater : instance_snapshot())
+    {
+        if (!floater.mSaveRect)
+        {
+            continue;
+        }
+        const bool movable = is_movable(&floater);
+        floater.initRectControl();
+        if (!movable)
+        {
+            continue;
+        }
+
+        // Has this floater been placed in the new layout before?
+        LLControlGroup* controls = getControlGroup();
+        LLControlVariablePtr x_control = controls->getControl(floater.mPosXControl);
+        LLControlVariablePtr y_control = controls->getControl(floater.mPosYControl);
+        const bool has_position = (x_control.notNull() && y_control.notNull() && !x_control->isDefault() && !y_control->isDefault())
+            || (!floater.mRectControl.empty() && controls->getRect(floater.mRectControl).notEmpty());
+
+        if (has_position)
+        {
+            floater.applyRectControl();
+        }
+        // Keep it fully on screen in the new layout (this brings floaters back from monitors
+        // that are no longer part of the window), then remember that position for this layout
+        gFloaterView->adjustToFitScreen(&floater, false);
+        floater.storeRectControl();
+    }
+}
+// </FS:Steve>
+
 void LLFloater::initRectControl()
 {
     // save_rect and save_visibility only apply to registered floaters
     if (mSaveRect)
     {
         std::string ctrl_name = getControlName(mInstanceName, mKey);
+        // <FS:Steve> Multi-monitor layout positions are kept in separate "_mm" settings
+        if (sMultiMonitorProfile)
+        {
+            ctrl_name += "_mm";
+        }
+        // </FS:Steve>
         mRectControl = LLFloaterReg::declareRectControl(ctrl_name);
         mPosXControl = LLFloaterReg::declarePosXControl(ctrl_name);
         mPosYControl = LLFloaterReg::declarePosYControl(ctrl_name);

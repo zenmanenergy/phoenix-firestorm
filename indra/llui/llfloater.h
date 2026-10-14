@@ -307,6 +307,14 @@ public:
     static std::string      getControlName(const std::string& name, const LLSD& key);
     static LLControlGroup*  getControlGroup();
 
+    // <FS:Steve> Multi-monitor support: floaters remember separate positions for the
+    // multi-monitor layout and the normal single-monitor layout. Switching saves where open
+    // floaters are, then moves them to where they were last time in the other layout (or,
+    // if they have never been placed in it, keeps them where they are, fully on screen).
+    static void             setMultiMonitorProfile(bool multi_monitor);
+    static bool             getMultiMonitorProfile() { return sMultiMonitorProfile; }
+    // </FS:Steve>
+
     bool            isMinimizeable() const{ return mCanMinimize; }
     bool            isCloseable() const{ return mCanClose; }
     bool            isDragOnLeft() const{ return mDragOnLeft; }
@@ -373,6 +381,10 @@ public:
     static void     closeFrontmostFloater();
 
     static bool     isQuitRequested() { return sQuitting; }
+
+private:
+    static bool     sMultiMonitorProfile; // <FS:Steve/> use the "_mm" position controls
+public:
 
 //  LLNotification::Params contextualNotification(const std::string& name)
 //  {

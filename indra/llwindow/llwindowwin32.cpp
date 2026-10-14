@@ -3289,6 +3289,16 @@ LRESULT CALLBACK LLWindowWin32::mainWindowProc(HWND h_wnd, UINT u_msg, WPARAM w_
         case WM_DISPLAYCHANGE:
         {
             window_imp->mWindowThread->pingWindowTimeout("WM_DISPLAYCHANGE");
+            // <FS:Steve> Multi-monitor: a monitor was added, removed or rearranged while we are
+            // stretched across all monitors, so cover the new set of monitors
+            if (window_imp->mSpanningMonitors)
+            {
+                SetWindowPos(window_imp->mWindowHandle, HWND_TOP,
+                    GetSystemMetrics(SM_XVIRTUALSCREEN), GetSystemMetrics(SM_YVIRTUALSCREEN),
+                    GetSystemMetrics(SM_CXVIRTUALSCREEN), GetSystemMetrics(SM_CYVIRTUALSCREEN),
+                    SWP_NOOWNERZORDER | SWP_NOACTIVATE);
+            }
+            // </FS:Steve>
             window_imp->updateWindowRect(); // <FS:Steve/> refresh cached monitor layout
             WINDOW_IMP_POST(window_imp->mCallbacks->handleDisplayChanged());
             break;

@@ -527,6 +527,8 @@ private:
     LLRect          mHomeRectScaled;                // that monitor's area, scaled UI coords
     S32             mPreferredUIScaleMonitor = -1;  // monitor whose DPI sets the UI scale
     S32             mMenuStackTopInset = 0;         // how far the menu/status bar was moved down
+    S32             mPendingFloaterProfile = -1;    // floater position layout waiting to be switched to
+    S32             mPendingProfileFrames = 0;      // frames the layout change has been stable
     LLHandle<LLView> mMenuStackHandle;
     LLHandle<LLView> mMenuBarHolderHandle;
     LLHandle<LLView> mNavBarHandle;
