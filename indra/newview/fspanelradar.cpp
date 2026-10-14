@@ -103,6 +103,7 @@ FSPanelRadar::FSPanelRadar()
     mColumnBits["range"] = 256;
     mColumnBits["has_notes"] = 512;
     mColumnBits["gender"] = 1024; // <FS:Steve/> Gender column
+    mColumnBits["looks"] = 2048;  // <FS:Steve/> Look-at counter column
 }
 
 FSPanelRadar::~FSPanelRadar()
@@ -328,6 +329,11 @@ void FSPanelRadar::updateList(const std::vector<LLSD>& entries, const LLSD& stat
     bool needs_sort = mRadarList->isSorted();
     mRadarList->setNeedsSort(false);
 
+    // <FS:Steve> Gender filter: 0 = show everyone, 1 = hide male, 2 = hide female.
+    // Avatars whose shape isn't known yet (out of draw distance or still loading) are always shown.
+    static LLCachedControl<S32> gender_filter(gSavedSettings, "FSRadarGenderFilter", 0);
+    // </FS:Steve>
+
     mRadarList->clearRows();
     for (const auto& avdata : entries)
     {
@@ -336,6 +342,16 @@ void FSPanelRadar::updateList(const std::vector<LLSD>& entries, const LLSD& stat
 
         LLSD entry = avdata["entry"];
         LLSD options = avdata["options"];
+
+        // <FS:Steve> Gender filter
+        const std::string gender_code = entry["gender_code"].asString();
+        if ((gender_filter == 1 && gender_code == "M") || (gender_filter == 2 && gender_code == "F"))
+        {
+            continue;
+        }
+        // Zero-padded time seen, so sorting is numeric (otherwise 10:00:00 sorts before 9:00:00)
+        const std::string seen_key = llformat("%09d", entry["seen_seconds"].asInteger());
+        // </FS:Steve>
 
         LLSD row_data;
         row_data["value"] = entry["id"];
@@ -395,13 +411,31 @@ void FSPanelRadar::updateList(const std::vector<LLSD>& entries, const LLSD& stat
         row_data["columns"][9]["font"] = tabnum_font;
 
         row_data["columns"][10]["column"] = "seen_sort";
-        row_data["columns"][10]["value"] = entry["seen"].asString() + "_" + entry["name"].asString();
+        //row_data["columns"][10]["value"] = entry["seen"].asString() + "_" + entry["name"].asString();
+        row_data["columns"][10]["value"] = seen_key + "_" + entry["name"].asString(); // <FS:Steve/> numeric order
 
         // <FS:Steve> Gender column
         row_data["columns"][11]["column"] = "gender";
         row_data["columns"][11]["value"] = entry["gender"];
         row_data["columns"][11]["halign"] = "center";
         row_data["columns"][11]["font"] = default_font;
+
+        // Hidden sort key for the Gender column: gender first (F, M, then still loading, then
+        // out of range), then time seen, then name, so equal genders stay in a steady order
+        // instead of jumping around on every refresh
+        std::string gender_rank = (gender_code == "F") ? "0F" : (gender_code == "M") ? "1M" : (gender_code == "?") ? "2" : "3";
+        row_data["columns"][12]["column"] = "gender_sort";
+        row_data["columns"][12]["value"] = gender_rank + "_" + seen_key + "_" + entry["name"].asString();
+
+        // Look-at counter: how many times this avatar has looked at you since you arrived in the region.
+        // Bold while they are looking right now. Sorting puts the highest counts first.
+        const S32 looks = entry["looks"].asInteger();
+        row_data["columns"][13]["column"] = "looks";
+        row_data["columns"][13]["value"] = (looks > 0) ? llformat("%d", looks) : std::string();
+        row_data["columns"][13]["halign"] = "right";
+        row_data["columns"][13]["font"] = tabnum_font;
+        row_data["columns"][14]["column"] = "looks_sort";
+        row_data["columns"][14]["value"] = llformat("%09d", 999999999 - looks) + "_" + entry["name"].asString();
         // </FS:Steve>
 
         LLScrollListItem* row = mRadarList->addElement(row_data);
@@ -440,6 +474,15 @@ void FSPanelRadar::updateList(const std::vector<LLSD>& entries, const LLSD& stat
             LLScrollListText* ageCell = (LLScrollListText*)row->getColumn(ageColumnIndex);
             ageCell->setColor(LLColor4(options["age_color"]));
         }
+
+        // <FS:Steve> Look-at counter: bold while they are looking at you right now
+        if (entry["looking_now"].asBoolean())
+        {
+            static S32 looksColumnIndex = mRadarList->getColumn("looks")->mIndex;
+            LLScrollListText* looksCell = (LLScrollListText*)row->getColumn(looksColumnIndex);
+            looksCell->setFontStyle(LLFontGL::BOLD);
+        }
+        // </FS:Steve>
     }
 
     mRadarList->setNeedsSort(needs_sort);
@@ -540,9 +583,16 @@ void FSPanelRadar::onColumnDisplayModeChanged()
         parent_floater->reshape(min_width, parent_floater->getRect().getHeight());
     }
 
+    // <FS:Steve> gender_sort is the hidden sort key of the Gender column, like seen_sort for Seen
+    //if (current_sort_col.empty() ||
+    //    (current_sort_col != "seen_sort" && mRadarList->getColumn(current_sort_col)->getWidth() == -1) ||
+    //    (current_sort_col == "seen_sort" && mRadarList->getColumn("seen")->getWidth() == -1))
     if (current_sort_col.empty() ||
-        (current_sort_col != "seen_sort" && mRadarList->getColumn(current_sort_col)->getWidth() == -1) ||
-        (current_sort_col == "seen_sort" && mRadarList->getColumn("seen")->getWidth() == -1))
+        (current_sort_col != "seen_sort" && current_sort_col != "gender_sort" && current_sort_col != "looks_sort" && mRadarList->getColumn(current_sort_col)->getWidth() == -1) ||
+        (current_sort_col == "seen_sort" && mRadarList->getColumn("seen")->getWidth() == -1) ||
+        (current_sort_col == "gender_sort" && mRadarList->getColumn("gender")->getWidth() == -1) ||
+        (current_sort_col == "looks_sort" && mRadarList->getColumn("looks")->getWidth() == -1))
+    // </FS:Steve>
     {
         current_sort_col = "range";
         current_sort_asc = true;

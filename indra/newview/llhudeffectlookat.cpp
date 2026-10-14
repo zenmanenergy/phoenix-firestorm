@@ -50,6 +50,7 @@
 
 // [RLVa:KC] - Firestrom specific
 #include "rlvhandler.h"
+#include "fsradar.h" // <FS:Steve/> look-at counter
 // [/RLVa:KC]
 
 //bool LLHUDEffectLookAt::sDebugLookAt = false;
@@ -433,6 +434,23 @@ void LLHUDEffectLookAt::unpackData(LLMessageSystem *mesgsys, S32 blocknum)
     {
         clearLookAtTarget();
     }
+
+    // <FS:Steve> Look-at counter for the Nearby people list. Only deliberate looks count:
+    // camera focus (Alt-click/cam), selecting/editing, and aiming in mouselook.
+    if (FSRadar::instanceExists())
+    {
+        bool looking_at_me = false;
+        LLViewerObject* target = mTargetObject.get();
+        if (target && isAgentAvatarValid()
+            && (mTargetType == LOOKAT_TARGET_FOCUS || mTargetType == LOOKAT_TARGET_SELECT || mTargetType == LOOKAT_TARGET_MOUSELOOK))
+        {
+            LLViewerObject* root = target->getRootEdit();
+            looking_at_me = (target == gAgentAvatarp)
+                || (root && root->isAttachment() && root->getAvatar() == gAgentAvatarp.get());
+        }
+        FSRadar::instance().onLookAtUpdate(source_id, looking_at_me);
+    }
+    // </FS:Steve>
 }
 
 //-----------------------------------------------------------------------------

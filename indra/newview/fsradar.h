@@ -80,6 +80,12 @@ public:
     static bool radarReportToCheck(const LLSD& userdata);
 
     void getCurrentData(std::vector<LLSD>& entries, LLSD& stats) const { entries = mRadarEntriesData; stats = mAvatarStats; }
+
+    // <FS:Steve> Look-at counter: called for every look-at message from another avatar.
+    // looking_at_me is true when that avatar's camera is focused on us (or our attachments).
+    void onLookAtUpdate(const LLUUID& source_id, bool looking_at_me);
+    S32  getLookAtCount(const LLUUID& avatar_id) const;
+    // </FS:Steve>
     std::shared_ptr<FSRadarEntry> getEntry(const LLUUID& avatar_id);
 
     // internals
@@ -145,6 +151,11 @@ private:
 
     LLUUID                  mTrackedAvatarId;
     LLSD                    mAvatarStats;
+
+    // <FS:Steve> Look-at counter, cleared when we change region
+    std::unordered_map<LLUUID, S32> mLookAtCounts;  // times each avatar started looking at us
+    uuid_set_t                      mLookingAtMe;   // avatars currently looking at us
+    // </FS:Steve>
 
     radar_update_callback_t mUpdateSignal;
 

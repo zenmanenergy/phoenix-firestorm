@@ -119,7 +119,15 @@
 					<radar_list.columns
 					 label="Gender"
 					 name="gender"
+					 sort_column="gender_sort"
 					 tool_tip="Male or female, from the avatar shape (? while loading, blank when out of draw distance)"
+					 width="45"/>
+					<!-- <FS:Steve> Look-at counter -->
+					<radar_list.columns
+					 label="Looks"
+					 name="looks"
+					 sort_column="looks_sort"
+					 tool_tip="How many times this avatar has focused their camera on you (or selected you) since you arrived in this region. Bold while they are looking now. Only counts people whose viewer sends look-at data."
 					 width="45"/>
 					<radar_list.columns
 					 label=""
@@ -148,6 +156,13 @@
 					 width="15"/>
 					<radar_list.columns
 					 name="seen_sort"
+					 width="-1"/>
+					<!-- <FS:Steve> hidden sort key for the Gender column -->
+					<radar_list.columns
+					 name="gender_sort"
+					 width="-1"/>
+					<radar_list.columns
+					 name="looks_sort"
 					 width="-1"/>
 				</radar_list>
 			</layout_panel>

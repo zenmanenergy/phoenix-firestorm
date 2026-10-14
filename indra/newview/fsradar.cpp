@@ -534,18 +534,28 @@ void FSRadar::updateRadarList()
         // <FS:Steve> Gender column: the shape's male/female setting, which every viewer receives as
         // part of the avatar's appearance. Only known once that avatar's appearance has arrived,
         // so it is "?" while loading and blank when the avatar is out of draw distance.
+        // "gender_code" is a fixed, untranslated code (M, F, ? or empty) used for sorting and filtering
         if (!avVo)
         {
             entry["gender"] = LLStringUtil::null;
+            entry["gender_code"] = LLStringUtil::null;
         }
         else if (avVo->visualParamWeightsAreDefault())
         {
             entry["gender"] = str_gender_unknown;
+            entry["gender_code"] = "?";
         }
         else
         {
-            entry["gender"] = (avVo->getVisualParamWeight("male") > 0.5f) ? str_gender_male : str_gender_female;
+            const bool is_male = (avVo->getVisualParamWeight("male") > 0.5f);
+            entry["gender"] = is_male ? str_gender_male : str_gender_female;
+            entry["gender_code"] = is_male ? "M" : "F";
         }
+        entry["seen_seconds"] = seentime; // for sorting
+        // <FS:Steve> Look-at counter
+        entry["looks"] = getLookAtCount(avId);
+        entry["looking_now"] = (mLookingAtMe.find(avId) != mLookingAtMe.end());
+        // </FS:Steve>
         // </FS:Steve>
 
         if (!gRlvHandler.hasBehaviour(RLV_BHVR_SHOWNAMES))
@@ -1077,8 +1087,42 @@ void FSRadar::updateNotes(const LLUUID& avatar_id, std::string_view notes)
     }
 }
 
+// <FS:Steve> Look-at counter
+void FSRadar::onLookAtUpdate(const LLUUID& source_id, bool looking_at_me)
+{
+    if (source_id.isNull() || source_id == gAgentID)
+    {
+        return;
+    }
+
+    if (looking_at_me)
+    {
+        // Count each time someone starts looking at us, not every repeat of the same look
+        if (mLookingAtMe.insert(source_id).second)
+        {
+            ++mLookAtCounts[source_id];
+        }
+    }
+    else
+    {
+        mLookingAtMe.erase(source_id);
+    }
+}
+
+S32 FSRadar::getLookAtCount(const LLUUID& avatar_id) const
+{
+    auto it = mLookAtCounts.find(avatar_id);
+    return (it != mLookAtCounts.end()) ? it->second : 0;
+}
+// </FS:Steve>
+
 void FSRadar::onRegionChanged()
 {
+    // <FS:Steve> Look-at counts are per region visit
+    mLookAtCounts.clear();
+    mLookingAtMe.clear();
+    // </FS:Steve>
+
     if (mRegionCapabilitiesReceivedCallbackConnection.connected())
     {
         mRegionCapabilitiesReceivedCallbackConnection.disconnect();
