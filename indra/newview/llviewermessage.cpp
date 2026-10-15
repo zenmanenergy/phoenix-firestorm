@@ -2835,6 +2835,13 @@ void process_chat_from_simulator(LLMessageSystem *msg, void **user_data)
     // IDEVO Correct for new-style "Resident" names
     if (chat.mSourceType == CHAT_SOURCE_AGENT)
     {
+        // <FS:Steve> Idle column: chatting (or starting to type) counts as activity
+        if (FSRadar::instanceExists())
+        {
+            FSRadar::instance().noteActivity(from_id);
+        }
+        // </FS:Steve>
+
         // I don't know if it's OK to change this here, if
         // anything downstream does lookups by name, for instance
 

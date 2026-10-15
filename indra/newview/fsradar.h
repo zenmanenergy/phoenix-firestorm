@@ -27,6 +27,7 @@
 #ifndef FS_RADAR_H
 #define FS_RADAR_H
 
+#include "llquaternion.h" // <FS:Steve/>
 #include "llframetimer.h" // <FS:Steve/>
 #include "llsingleton.h"
 
@@ -54,6 +55,8 @@ typedef enum e_radar_payment_info_flag
     FSRADAR_PAYMENT_INFO_FILLED,
     FSRADAR_PAYMENT_INFO_USED
 } ERadarPaymentInfoFlag;
+
+class LLVOAvatar; // <FS:Steve/>
 
 class FSRadar
     : public LLSingleton<FSRadar>
@@ -89,6 +92,11 @@ public:
     // <FS:Steve> Look-at counter: called for every look-at message from another avatar.
     // looking_at_me is true when that avatar's camera is focused on us (or our attachments).
     void onLookAtUpdate(const LLUUID& source_id, bool looking_at_me);
+
+    // <FS:Steve> Idle column: something showed this avatar is active (chat, camera movement, ...)
+    void noteActivity(const LLUUID& avatar_id);
+    // Look-at data from this avatar; a change of what or where they are looking counts as activity
+    void onLookAtActivity(const LLUUID& source_id, S32 look_type, const LLUUID& target_id, const LLVector3d& target_pos);
     S32  getLookAtCount(const LLUUID& avatar_id) const;
     // </FS:Steve>
     std::shared_ptr<FSRadarEntry> getEntry(const LLUUID& avatar_id);
@@ -175,6 +183,24 @@ private:
     // <FS:Steve> Look-at counter, cleared when we change region
     std::unordered_map<LLUUID, S32> mLookAtCounts;  // times each avatar started looking at us
     uuid_set_t                      mLookingAtMe;   // avatars currently looking at us
+
+    // <FS:Steve> Idle column: last activity we have seen from each avatar
+    struct IdleInfo
+    {
+        time_t       mLastActivity = 0;
+        LLVector3d   mLastPos;
+        LLQuaternion mLastRot;
+        bool         mHasRot = false;
+        bool         mLastSitting = false;
+        bool         mAway = false;
+        time_t       mAwayStart = 0;
+        S32          mLookType = -1;
+        LLUUID       mLookTarget;
+        LLVector3d   mLookPos;
+    };
+    std::unordered_map<LLUUID, IdleInfo> mIdleInfo;
+    void updateIdle(const LLUUID& avatar_id, const LLVector3d& pos, LLVOAvatar* avatar, bool sitting, time_t now, LLSD& entry);
+    // </FS:Steve>
     // </FS:Steve>
 
     radar_update_callback_t mUpdateSignal;

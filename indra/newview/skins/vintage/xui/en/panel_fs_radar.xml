@@ -129,6 +129,13 @@
 					 sort_column="looks_sort"
 					 tool_tip="How many times this avatar has focused their camera on you (or selected you) since you arrived in this region. Bold while they are looking now. Only counts people whose viewer sends look-at data."
 					 width="45"/>
+					<!-- <FS:Steve> Idle -->
+					<radar_list.columns
+					 label="Idle"
+					 name="idle"
+					 sort_column="idle_sort"
+					 tool_tip="Time since this avatar last did anything you could see: moved, turned, typed, chatted, sat or stood, or moved their camera. Shows Away and how long when their viewer has marked them Away. Only counts from when they came into view."
+					 width="70"/>
 					<radar_list.columns
 					 label=""
 					 name="in_region"
@@ -163,6 +170,9 @@
 					 width="-1"/>
 					<radar_list.columns
 					 name="looks_sort"
+					 width="-1"/>
+					<radar_list.columns
+					 name="idle_sort"
 					 width="-1"/>
 				</radar_list>
 			</layout_panel>

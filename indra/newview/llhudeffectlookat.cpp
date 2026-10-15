@@ -449,6 +449,7 @@ void LLHUDEffectLookAt::unpackData(LLMessageSystem *mesgsys, S32 blocknum)
                 || (root && root->isAttachment() && root->getAvatar() == gAgentAvatarp.get());
         }
         FSRadar::instance().onLookAtUpdate(source_id, looking_at_me);
+        FSRadar::instance().onLookAtActivity(source_id, (S32)mTargetType, target_id, new_target); // Idle column
     }
     // </FS:Steve>
 }

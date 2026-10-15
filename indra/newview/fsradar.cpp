@@ -42,6 +42,7 @@
 #include "fslslbridge.h"
 #include "fslslbridgerequest.h"
 #include "llagentcamera.h" // <FS:Steve/>
+#include "llhudeffectlookat.h" // <FS:Steve/> look-at types
 #include "lggcontactsets.h"
 #include "lfsimfeaturehandler.h"
 #include "llagent.h"
@@ -556,6 +557,7 @@ void FSRadar::updateRadarList()
         // <FS:Steve> Look-at counter
         entry["looks"] = getLookAtCount(avId);
         entry["looking_now"] = (mLookingAtMe.find(avId) != mLookingAtMe.end());
+        updateIdle(avId, avPos, avVo, entry["sitting"].asBoolean(), now, entry); // <FS:Steve/> Idle column
         // </FS:Steve>
         // </FS:Steve>
 
@@ -859,6 +861,13 @@ void FSRadar::updateRadarList()
 
     processPendingActions(); // <FS:Steve/>
 
+    // <FS:Steve> Forget idle data for avatars that are gone
+    for (auto it = mIdleInfo.begin(); it != mIdleInfo.end(); )
+    {
+        it = (mEntryList.find(it->first) == mEntryList.end()) ? mIdleInfo.erase(it) : std::next(it);
+    }
+    // </FS:Steve>
+
     // Inform our subscribers about updates
     if (!mUpdateSignal.empty())
     {
@@ -1121,6 +1130,108 @@ void FSRadar::updateNotes(const LLUUID& avatar_id, std::string_view notes)
         entry->setNotes(notes);
     }
 }
+
+// <FS:Steve> Idle column
+void FSRadar::noteActivity(const LLUUID& avatar_id)
+{
+    if (avatar_id.notNull() && avatar_id != gAgentID)
+    {
+        mIdleInfo[avatar_id].mLastActivity = time(nullptr);
+    }
+}
+
+void FSRadar::onLookAtActivity(const LLUUID& source_id, S32 look_type, const LLUUID& target_id, const LLVector3d& target_pos)
+{
+    if (source_id.isNull() || source_id == gAgentID)
+    {
+        return;
+    }
+    IdleInfo& info = mIdleInfo[source_id];
+    // Round to half a metre so tiny jitter doesn't count as activity
+    const LLVector3d rounded(ll_round(target_pos.mdV[VX] * 2.0) / 2.0, ll_round(target_pos.mdV[VY] * 2.0) / 2.0, ll_round(target_pos.mdV[VZ] * 2.0) / 2.0);
+    const bool changed = (look_type != info.mLookType) || (target_id != info.mLookTarget) || (rounded != info.mLookPos);
+    const bool first = (info.mLookType == -1);
+    info.mLookType = look_type;
+    info.mLookTarget = target_id;
+    info.mLookPos = rounded;
+    // The viewer sends "idle"/"auto listen" on its own, so only real camera or mouse use counts
+    if (changed && !first && look_type != LOOKAT_TARGET_NONE && look_type != LOOKAT_TARGET_IDLE && look_type != LOOKAT_TARGET_AUTO_LISTEN)
+    {
+        info.mLastActivity = time(nullptr);
+    }
+}
+
+void FSRadar::updateIdle(const LLUUID& avatar_id, const LLVector3d& pos, LLVOAvatar* avatar, bool sitting, time_t now, LLSD& entry)
+{
+    auto [it, inserted] = mIdleInfo.try_emplace(avatar_id);
+    IdleInfo& info = it->second;
+    if (inserted || info.mLastActivity == 0)
+    {
+        // We only know what happens from now on
+        info.mLastActivity = now;
+        info.mLastPos = pos;
+        info.mLastSitting = sitting;
+    }
+
+    bool active = false;
+
+    // Moved (ignore positions with unknown height, they jump around)
+    if (pos.mdV[VZ] != AVATAR_UNKNOWN_Z_OFFSET && info.mLastPos.mdV[VZ] != AVATAR_UNKNOWN_Z_OFFSET
+        && dist_vec(pos, info.mLastPos) > 0.3)
+    {
+        active = true;
+    }
+    info.mLastPos = pos;
+
+    // Sat down or stood up
+    if (sitting != info.mLastSitting)
+    {
+        active = true;
+    }
+    info.mLastSitting = sitting;
+
+    bool away = false;
+    if (avatar)
+    {
+        // Turned
+        const LLQuaternion rot = avatar->getRotation();
+        if (info.mHasRot && llabs(dot(rot, info.mLastRot)) < 0.995f) // about 11 degrees
+        {
+            active = true;
+        }
+        info.mLastRot = rot;
+        info.mHasRot = true;
+
+        // Typing
+        if (avatar->isTyping())
+        {
+            active = true;
+        }
+
+        away = avatar->mSignaledAnimations.find(ANIM_AGENT_AWAY) != avatar->mSignaledAnimations.end();
+    }
+
+    // Away status (their viewer's own idle detection)
+    if (away && !info.mAway)
+    {
+        info.mAwayStart = now;
+    }
+    else if (!away && info.mAway)
+    {
+        active = true; // came back
+    }
+    info.mAway = away;
+
+    if (active)
+    {
+        info.mLastActivity = now;
+    }
+
+    entry["idle_seconds"] = (S32)(now - info.mLastActivity);
+    entry["away"] = away;
+    entry["away_seconds"] = away ? (S32)(now - info.mAwayStart) : 0;
+}
+// </FS:Steve>
 
 // <FS:Steve> Look-at counter
 void FSRadar::onLookAtUpdate(const LLUUID& source_id, bool looking_at_me)

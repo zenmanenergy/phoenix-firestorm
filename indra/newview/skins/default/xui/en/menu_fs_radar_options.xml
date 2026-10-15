@@ -172,6 +172,16 @@
 			 function="Radar.ToggleColumn"
 			 parameter="looks"/>
 		</menu_item_check>
+		<menu_item_check
+		 label="Idle"
+		 name="idle">
+			<menu_item_check.on_check
+			 function="Radar.EnableColumn"
+			 parameter="idle"/>
+			<menu_item_check.on_click
+			 function="Radar.ToggleColumn"
+			 parameter="idle"/>
+		</menu_item_check>
 		<!-- </FS:Steve> -->
 		<menu_item_check
 		 label="Seen"

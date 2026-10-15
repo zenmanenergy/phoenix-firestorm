@@ -104,6 +104,7 @@ FSPanelRadar::FSPanelRadar()
     mColumnBits["has_notes"] = 512;
     mColumnBits["gender"] = 1024; // <FS:Steve/> Gender column
     mColumnBits["looks"] = 2048;  // <FS:Steve/> Look-at counter column
+    mColumnBits["idle"] = 4096;   // <FS:Steve/> Idle column
 }
 
 FSPanelRadar::~FSPanelRadar()
@@ -469,6 +470,25 @@ void FSPanelRadar::updateList(const std::vector<LLSD>& entries, const LLSD& stat
         row_data["columns"][13]["font"] = tabnum_font;
         row_data["columns"][14]["column"] = "looks_sort";
         row_data["columns"][14]["value"] = llformat("%09d", 999999999 - looks) + "_" + entry["name"].asString();
+
+        // Idle: time since we last saw them do anything (move, turn, type, chat, sit/stand, move
+        // their camera), or how long they have been Away. Sorting puts the most active first and
+        // Away people last.
+        auto format_duration = [](S32 seconds)
+        {
+            seconds = llmax(seconds, 0);
+            return (seconds >= 3600) ? llformat("%d:%02d:%02d", seconds / 3600, (seconds / 60) % 60, seconds % 60)
+                                     : llformat("%d:%02d", seconds / 60, seconds % 60);
+        };
+        const bool away = entry["away"].asBoolean();
+        const S32 idle_seconds = entry["idle_seconds"].asInteger();
+        const S32 away_seconds = entry["away_seconds"].asInteger();
+        row_data["columns"][15]["column"] = "idle";
+        row_data["columns"][15]["value"] = away ? ("Away " + format_duration(away_seconds)) : format_duration(idle_seconds);
+        row_data["columns"][15]["halign"] = "right";
+        row_data["columns"][15]["font"] = tabnum_font;
+        row_data["columns"][16]["column"] = "idle_sort";
+        row_data["columns"][16]["value"] = llformat("%d%09d", away ? 1 : 0, away ? away_seconds : idle_seconds) + "_" + entry["name"].asString();
         // </FS:Steve>
 
         LLScrollListItem* row = mRadarList->addElement(row_data);
@@ -621,10 +641,11 @@ void FSPanelRadar::onColumnDisplayModeChanged()
     //    (current_sort_col != "seen_sort" && mRadarList->getColumn(current_sort_col)->getWidth() == -1) ||
     //    (current_sort_col == "seen_sort" && mRadarList->getColumn("seen")->getWidth() == -1))
     if (current_sort_col.empty() ||
-        (current_sort_col != "seen_sort" && current_sort_col != "gender_sort" && current_sort_col != "looks_sort" && mRadarList->getColumn(current_sort_col)->getWidth() == -1) ||
+        (current_sort_col != "seen_sort" && current_sort_col != "gender_sort" && current_sort_col != "looks_sort" && current_sort_col != "idle_sort" && mRadarList->getColumn(current_sort_col)->getWidth() == -1) ||
         (current_sort_col == "seen_sort" && mRadarList->getColumn("seen")->getWidth() == -1) ||
         (current_sort_col == "gender_sort" && mRadarList->getColumn("gender")->getWidth() == -1) ||
-        (current_sort_col == "looks_sort" && mRadarList->getColumn("looks")->getWidth() == -1))
+        (current_sort_col == "looks_sort" && mRadarList->getColumn("looks")->getWidth() == -1) ||
+        (current_sort_col == "idle_sort" && mRadarList->getColumn("idle")->getWidth() == -1))
     // </FS:Steve>
     {
         current_sort_col = "range";
