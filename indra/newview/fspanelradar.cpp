@@ -510,6 +510,25 @@ void FSPanelRadar::updateList(const std::vector<LLSD>& entries, const LLSD& stat
             radarNameCell->setColor(LLColor4(options["name_color"]));
         }
 
+        // <FS:Steve> Name colors: green if you have notes on them, red if idle a while (red wins)
+        {
+            static LLCachedControl<LLColor4> notesColor(gSavedSettings, "FSRadarNotesColor", LLColor4(0.25f, 0.9f, 0.25f, 1.f));
+            static LLCachedControl<LLColor4> idleColor(gSavedSettings, "FSRadarIdleColor", LLColor4(1.f, 0.3f, 0.3f, 1.f));
+            static LLCachedControl<S32> idleMinutes(gSavedSettings, "FSRadarIdleColorMinutes", 5);
+            const bool is_idle = entry["away"].asBoolean() || entry["idle_seconds"].asInteger() >= idleMinutes() * 60;
+            const LLColor4 idle_color = idleColor();
+            const LLColor4 notes_color = notesColor();
+            if (is_idle && idle_color.mV[VALPHA] > 0.f)
+            {
+                radarNameCell->setColor(idle_color);
+            }
+            else if (!entry["notes"].asString().empty() && notes_color.mV[VALPHA] > 0.f)
+            {
+                radarNameCell->setColor(notes_color);
+            }
+        }
+        // </FS:Steve>
+
         if (entry.has("voice_level_icon"))
         {
             LLScrollListText* voiceLevelCell = (LLScrollListText*)row->getColumn(voiceLevelColumnIndex);

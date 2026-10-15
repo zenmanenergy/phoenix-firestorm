@@ -25152,6 +25152,49 @@ Change of this parameter will affect the layout of buttons in notification toast
       <key>Value</key>
       <integer>0</integer>
     </map>
+    <key>FSRadarNotesColor</key>
+    <map>
+      <key>Comment</key>
+      <string>Nearby people list: name color for avatars you have written notes about. Set alpha to 0 to turn it off.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Color4</string>
+      <key>Value</key>
+      <array>
+        <real>0.25</real>
+        <real>0.9</real>
+        <real>0.25</real>
+        <real>1.0</real>
+      </array>
+    </map>
+    <key>FSRadarIdleColor</key>
+    <map>
+      <key>Comment</key>
+      <string>Nearby people list: name color for avatars idle longer than FSRadarIdleColorMinutes. Takes priority over the notes color. Set alpha to 0 to turn it off.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>Color4</string>
+      <key>Value</key>
+      <array>
+        <real>1.0</real>
+        <real>0.3</real>
+        <real>0.3</real>
+        <real>1.0</real>
+      </array>
+    </map>
+    <key>FSRadarIdleColorMinutes</key>
+    <map>
+      <key>Comment</key>
+      <string>Nearby people list: minutes of no activity before an avatar's name turns the idle color.</string>
+      <key>Persist</key>
+      <integer>1</integer>
+      <key>Type</key>
+      <string>S32</string>
+      <key>Value</key>
+      <integer>5</integer>
+    </map>
     <key>FSLimitFramerate</key>
       <map>
       <key>Comment</key>

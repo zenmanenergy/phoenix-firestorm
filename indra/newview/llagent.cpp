@@ -115,6 +115,7 @@
 // Firestorm includes
 #include "fsfloaternearbychat.h"
 #include "fslslbridge.h"
+#include "fsradar.h" // <FS:Steve/>
 #include "llpresetsmanager.h"
 #include "NACLantispam.h"
 #include "aoengine.h"
@@ -4835,6 +4836,15 @@ bool LLAgent::teleportCore(bool is_local)
 
     // local logic
     add(LLStatViewer::TELEPORT, 1);
+
+    // <FS:Steve> If the radar raised the draw distance to reach a far avatar, put it back
+    // before we leave, so we don't arrive somewhere new loading up to 1024 m of scenery.
+    if (FSRadar::instanceExists())
+    {
+        FSRadar::instance().restoreDrawDistance();
+    }
+    // </FS:Steve>
+
     if (is_local)
     {
         LL_INFOS("Teleport") << "Setting teleport state to TELEPORT_LOCAL" << LL_ENDL;
