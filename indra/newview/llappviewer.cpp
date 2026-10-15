@@ -4479,6 +4479,12 @@ void LLAppViewer::cleanupSavedSettings()
     // Some things are cached in LLAgent.
     if (gAgent.isInitialized())
     {
+        // <FS:Steve> Don't save a draw distance that the radar only raised temporarily
+        if (FSRadar::instanceExists())
+        {
+            FSRadar::instance().restoreDrawDistance();
+        }
+        // </FS:Steve>
         gSavedSettings.setF32("RenderFarClip", gAgentCamera.mDrawDistance);
     }
 }

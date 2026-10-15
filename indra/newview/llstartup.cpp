@@ -248,6 +248,7 @@
 #include "fsfloaterstreamtitle.h"
 #include "fsfloaterwearablefavorites.h"
 #include "fslslbridge.h"
+#include "fsregiongrouptag.h" // <FS:Steve/>
 #include "fsradar.h"
 #include "fsregistrarutils.h"
 #include "fsscriptlibrary.h"
@@ -2358,6 +2359,7 @@ bool idle_startup()
         LLFloaterSidePanelContainer::getPanel("people", "panel_people");
         FSRadar::instance();
         LL_INFOS("AppInit") << "Radar initialized" << LL_ENDL;
+        FSRegionGroupTag::instance(); // <FS:Steve/> wear group tags in regions that need them
         // </FS:Ansariel>
 
         // <FS:Ansariel> Register check function for registrar enable checks

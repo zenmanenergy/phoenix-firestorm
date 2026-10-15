@@ -250,6 +250,17 @@ Hover your mouse over the options for more help.
          tool_tip="Sets whether you want to participate in group chat for this group."
          top_pad="5"
          width="300" />
+        <!-- <FS:Steve> Wear this group's tag automatically in the current region -->
+        <check_box
+         height="16"
+         font="SansSerifSmall"
+         label="Wear this group's tag in [REGION]"
+         layout="topleft"
+         left="0"
+         name="use_tag_in_region"
+         tool_tip="Make this group active automatically whenever you arrive in this region, and set your active group back to None when you leave it. Takes effect immediately."
+         top_pad="5"
+         width="300" />
         <!-- </exodus> -->
 
          <text

@@ -114,6 +114,8 @@ private:
     LLComboBox      *mComboActiveTitle;
     LLComboBox      *mComboMature;
     LLCheckBoxCtrl  *mCtrlReceiveGroupChat; // <exodus/>
+    LLCheckBoxCtrl  *mCtrlRegionTag = nullptr; // <FS:Steve/> wear this group's tag in the current region
+    void            updateRegionTagCheckbox();  // <FS:Steve/>
 
     LLUUID mIteratorGroup; // <FS:ND/> FIRE-6074; UUID of the group mMemberProgress belongs to.
 

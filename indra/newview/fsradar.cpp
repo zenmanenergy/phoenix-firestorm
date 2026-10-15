@@ -41,6 +41,7 @@
 #include "fskeywords.h"
 #include "fslslbridge.h"
 #include "fslslbridgerequest.h"
+#include "llagentcamera.h" // <FS:Steve/>
 #include "lggcontactsets.h"
 #include "lfsimfeaturehandler.h"
 #include "llagent.h"
@@ -856,6 +857,8 @@ void FSRadar::updateRadarList()
 
     checkTracking();
 
+    processPendingActions(); // <FS:Steve/>
+
     // Inform our subscribers about updates
     if (!mUpdateSignal.empty())
     {
@@ -890,7 +893,22 @@ void FSRadar::teleportToAvatar(const LLUUID& targetAv)
         LLVector3d avpos = entry->mGlobalPos;
         if (avpos.mdV[VZ] == AVATAR_UNKNOWN_Z_OFFSET)
         {
-            LLNotificationsUtil::add("TeleportToAvatarNotPossible");
+            // <FS:Steve> Height unknown (usually a skybox above ~1020 m). Ask the LSL bridge for
+            // their exact height now, and teleport as soon as it answers.
+            //LLNotificationsUtil::add("TeleportToAvatarNotPossible");
+            if (FSLSLBridge::instance().canUseBridge())
+            {
+                FSLSLBridge::instance().viewerToLSL("getZOffsets|" + targetAv.asString(), FSLSLBridgeRequestRadarPos_Success);
+                mPendingTeleportAvatar = targetAv;
+                mPendingTeleportName = entry->getName();
+                mPendingTeleportTimer.reset();
+                FSCommon::report_to_nearby_chat("Finding " + mPendingTeleportName + "'s height, then teleporting...");
+            }
+            else
+            {
+                LLNotificationsUtil::add("TeleportToAvatarNotPossible");
+            }
+            // </FS:Steve>
         }
         else
         {
@@ -1045,6 +1063,23 @@ void FSRadar::zoomAvatar(const LLUUID& avatar_id, std::string_view name)
 {
     if (LLAvatarActions::canZoomIn(avatar_id))
     {
+        // <FS:Steve> If the avatar isn't loaded (outside draw distance), the camera can't get
+        // to them and the server won't send their avatar. Raise the draw distance for now so
+        // the camera can reach their reported position and they load in, then zoom properly.
+        auto entry = getEntry(avatar_id);
+        if (!gObjectList.findObject(avatar_id) && entry
+            && entry->mGlobalPos.mdV[VZ] != AVATAR_UNKNOWN_Z_OFFSET)
+        {
+            const F32 distance = (F32)dist_vec(entry->mGlobalPos, gAgent.getPositionGlobal());
+            if (distance > gAgentCamera.mDrawDistance - 16.f)
+            {
+                raiseDrawDistance(distance + 64.f, name);
+            }
+            mPendingZoomAvatar = avatar_id;
+            mPendingZoomName = std::string(name);
+            mPendingZoomTimer.reset();
+        }
+        // </FS:Steve>
         LLAvatarActions::zoomIn(avatar_id);
     }
     else
@@ -1113,6 +1148,95 @@ S32 FSRadar::getLookAtCount(const LLUUID& avatar_id) const
 {
     auto it = mLookAtCounts.find(avatar_id);
     return (it != mLookAtCounts.end()) ? it->second : 0;
+}
+// </FS:Steve>
+
+// <FS:Steve> Reaching avatars outside draw distance
+namespace
+{
+    // Second Life's largest draw distance
+    constexpr F32 MAX_REACH_DRAW_DISTANCE = 1024.f;
+    constexpr F32 PENDING_ZOOM_TIMEOUT = 30.f;     // seconds to wait for the avatar to load
+    constexpr F32 PENDING_TELEPORT_TIMEOUT = 15.f; // seconds to wait for the bridge
+}
+
+void FSRadar::raiseDrawDistance(F32 distance, std::string_view name)
+{
+    distance = llmin(distance, MAX_REACH_DRAW_DISTANCE);
+    if (distance <= gAgentCamera.mDrawDistance)
+    {
+        return;
+    }
+    if (mSavedDrawDistance < 0.f)
+    {
+        mSavedDrawDistance = gAgentCamera.mDrawDistance;
+    }
+    // Change the live draw distance only, not the saved setting
+    mRaisedDrawDistance = distance;
+    gAgentCamera.mDrawDistance = distance;
+    LLWorld::getInstance()->setLandFarClip(distance);
+    FSCommon::report_to_nearby_chat(llformat("Draw distance raised to %.0f m for now to reach ", distance) + std::string(name)
+                                    + ". It goes back when you reset your camera (Esc).");
+}
+
+void FSRadar::restoreDrawDistance()
+{
+    if (mSavedDrawDistance < 0.f)
+    {
+        return;
+    }
+    // Leave it alone if the user changed the draw distance themselves in the meantime
+    if (llabs(gAgentCamera.mDrawDistance - mRaisedDrawDistance) < 0.5f)
+    {
+        gAgentCamera.mDrawDistance = mSavedDrawDistance;
+        LLWorld::getInstance()->setLandFarClip(mSavedDrawDistance);
+    }
+    mSavedDrawDistance = -1.f;
+    mPendingZoomAvatar.setNull();
+}
+
+void FSRadar::processPendingActions()
+{
+    // Zoom: once the avatar has loaded, zoom on it properly
+    if (mPendingZoomAvatar.notNull())
+    {
+        if (gObjectList.findObject(mPendingZoomAvatar))
+        {
+            LLAvatarActions::zoomIn(mPendingZoomAvatar);
+            mPendingZoomAvatar.setNull();
+        }
+        else if (mPendingZoomTimer.getElapsedTimeF32() > PENDING_ZOOM_TIMEOUT)
+        {
+            FSCommon::report_to_nearby_chat(mPendingZoomName + " didn't load. They may be too far away or in a region you are not connected to; try Teleport To instead.");
+            mPendingZoomAvatar.setNull();
+        }
+    }
+    // Draw distance: back to normal once the camera is back on our own avatar
+    if (mSavedDrawDistance >= 0.f && mPendingZoomAvatar.isNull() && gAgentCamera.getFocusOnAvatar())
+    {
+        restoreDrawDistance();
+    }
+
+    // Teleport: once the bridge has told us their height, go
+    if (mPendingTeleportAvatar.notNull())
+    {
+        auto entry = getEntry(mPendingTeleportAvatar);
+        if (!entry)
+        {
+            mPendingTeleportAvatar.setNull(); // they left
+        }
+        else if (entry->mGlobalPos.mdV[VZ] != AVATAR_UNKNOWN_Z_OFFSET)
+        {
+            const LLUUID target = mPendingTeleportAvatar;
+            mPendingTeleportAvatar.setNull();
+            teleportToAvatar(target);
+        }
+        else if (mPendingTeleportTimer.getElapsedTimeF32() > PENDING_TELEPORT_TIMEOUT)
+        {
+            mPendingTeleportAvatar.setNull();
+            LLNotificationsUtil::add("TeleportToAvatarNotPossible");
+        }
+    }
 }
 // </FS:Steve>
 

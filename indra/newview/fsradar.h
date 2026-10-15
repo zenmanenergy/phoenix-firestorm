@@ -27,6 +27,7 @@
 #ifndef FS_RADAR_H
 #define FS_RADAR_H
 
+#include "llframetimer.h" // <FS:Steve/>
 #include "llsingleton.h"
 
 #include "fsradarentry.h"
@@ -67,6 +68,10 @@ public:
     entry_map_t getRadarList() { return mEntryList; }
 
     void startTracking(const LLUUID& avatar_id);
+
+    // <FS:Steve> Put the draw distance back if zoomAvatar() raised it to reach someone far away
+    void restoreDrawDistance();
+    // </FS:Steve>
     void zoomAvatar(const LLUUID& avatar_id, std::string_view name);
     void teleportToAvatar(const LLUUID& targetAv);
     void requestRadarChannelAlertSync();
@@ -125,6 +130,21 @@ private:
     void updateAgeAlertCheck();
 
     void onRegionChanged();
+
+    // <FS:Steve> Camming to avatars that are not loaded yet, and teleporting to avatars whose
+    // height is not known yet: finish these once the data arrives
+    void processPendingActions();
+    void raiseDrawDistance(F32 distance, std::string_view name);
+
+    F32          mSavedDrawDistance = -1.f;  // draw distance before we raised it, -1 if not raised
+    F32          mRaisedDrawDistance = 0.f;  // what we raised it to
+    LLUUID       mPendingZoomAvatar;         // waiting for this avatar to load, then zoom on it
+    std::string  mPendingZoomName;
+    LLFrameTimer mPendingZoomTimer;
+    LLUUID       mPendingTeleportAvatar;     // waiting for this avatar's height, then teleport
+    std::string  mPendingTeleportName;
+    LLFrameTimer mPendingTeleportTimer;
+    // </FS:Steve>
 
     std::unique_ptr<Updater> mRadarListUpdater;
 

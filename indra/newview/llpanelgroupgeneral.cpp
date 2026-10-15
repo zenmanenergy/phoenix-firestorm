@@ -61,6 +61,7 @@
 #include "lleconomy.h" // <FS:AW FIRE-7091 group creation cost inaccurate on opensim>
 #include "llurlaction.h"
 #include "llviewermenu.h"
+#include "fsregiongrouptag.h" // <FS:Steve/>
 
 static LLPanelInjector<LLPanelGroupGeneral> t_panel_group_general("panel_group_general");
 
@@ -219,6 +220,23 @@ bool LLPanelGroupGeneral::postBuild()
         }
     }
     // </exodus>
+
+    // <FS:Steve> Wear this group's tag in the current region. Takes effect immediately,
+    // no Apply needed. Optional, so skins without the checkbox still work.
+    mCtrlRegionTag = findChild<LLCheckBoxCtrl>("use_tag_in_region", recurse);
+    if (mCtrlRegionTag)
+    {
+        mCtrlRegionTag->setCommitCallback([this](LLUICtrl* ctrl, const LLSD&)
+        {
+            if (mGroupID.notNull())
+            {
+                FSRegionGroupTag::instance().setGroupForCurrentRegion(mGroupID, ctrl->getValue().asBoolean());
+            }
+            updateRegionTagCheckbox();
+        });
+        updateRegionTagCheckbox();
+    }
+    // </FS:Steve>
 
     mCtrlListGroup = getChild<LLCheckBoxCtrl>("list_groups_in_profile", recurse);
     if (mCtrlListGroup)
@@ -658,6 +676,8 @@ void LLPanelGroupGeneral::update(LLGroupChange gc)
         }
     }
     // </exodus>
+
+    updateRegionTagCheckbox(); // <FS:Steve/>
 
     if (mInsignia) mInsignia->setEnabled(mAllowEdit && can_change_ident);
     if (mEditCharter) mEditCharter->setEnabled(mAllowEdit && can_change_ident);
@@ -1126,3 +1146,20 @@ void LLPanelGroupGeneral::refreshInsigniaTexture()
 }
 // </FS:Ansariel>
 
+
+// <FS:Steve> Show the current region's name and whether this group is worn there
+void LLPanelGroupGeneral::updateRegionTagCheckbox()
+{
+    if (!mCtrlRegionTag)
+    {
+        return;
+    }
+    const bool is_member = mGroupID.notNull() && gAgent.isInGroup(mGroupID);
+    const std::string region_name = FSRegionGroupTag::getCurrentRegionName();
+
+    mCtrlRegionTag->setLabelArg("[REGION]", region_name.empty() ? std::string("...") : region_name);
+    mCtrlRegionTag->setVisible(is_member);
+    mCtrlRegionTag->setEnabled(is_member && !region_name.empty());
+    mCtrlRegionTag->set(is_member && FSRegionGroupTag::instance().getGroupForCurrentRegion() == mGroupID);
+}
+// </FS:Steve>

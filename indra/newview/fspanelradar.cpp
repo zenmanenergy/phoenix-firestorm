@@ -356,7 +356,40 @@ void FSPanelRadar::updateList(const std::vector<LLSD>& entries, const LLSD& stat
         LLSD row_data;
         row_data["value"] = entry["id"];
         row_data["columns"][0]["column"] = "name";
-        row_data["columns"][0]["value"] = entry["name"];
+        // <FS:Steve> Show the avatar's notes in parentheses after the name, on one line and
+        // clipped if long. The full notes are still in the Notes column tooltip.
+        //row_data["columns"][0]["value"] = entry["name"];
+        std::string name_and_notes = entry["name"].asString();
+        std::string notes = entry["notes"].asString();
+        if (!notes.empty())
+        {
+            // line breaks and tabs become spaces, then runs of spaces collapse to one
+            std::string one_line;
+            one_line.reserve(notes.size());
+            for (char c : notes)
+            {
+                const char out = (c == '\r' || c == '\n' || c == '\t') ? ' ' : c;
+                if (out == ' ' && (one_line.empty() || one_line.back() == ' '))
+                {
+                    continue;
+                }
+                one_line += out;
+            }
+            LLStringUtil::trim(one_line);
+            if (!one_line.empty())
+            {
+                constexpr size_t MAX_NOTE_CHARS = 60;
+                LLWString wide = utf8str_to_wstring(one_line); // clip by characters, not bytes
+                if (wide.size() > MAX_NOTE_CHARS)
+                {
+                    wide.resize(MAX_NOTE_CHARS);
+                    one_line = wstring_to_utf8str(wide) + "...";
+                }
+                name_and_notes += " (" + one_line + ")";
+            }
+        }
+        row_data["columns"][0]["value"] = name_and_notes;
+        // </FS:Steve>
         row_data["columns"][0]["font"] = default_font;
 
         row_data["columns"][1]["column"] = "voice_level";

@@ -889,6 +889,18 @@
 		<key>Value</key>
 			<integer>0</integer>
 	</map>
+	<key>FSRegionGroupTags</key>
+	<map>
+		<key>Comment</key>
+			<string>Regions that need a group tag: region name -> group ID. Arriving in one of these regions makes that group active; leaving it for a region without a group sets the active group back to None. Edited from the group profile.</string>
+		<key>Persist</key>
+			<integer>1</integer>
+		<key>Type</key>
+			<string>LLSD</string>
+		<key>Value</key>
+			<map>
+			</map>
+	</map>
 	<key>FSLastOpenIMs</key>
 	<map>
 		<key>Comment</key>
