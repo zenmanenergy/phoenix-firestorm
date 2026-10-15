@@ -4677,6 +4677,20 @@ void LLViewerWindow::updateMonitorLayout(bool active, const LLRect& home_rect_ra
 
     // 5. Login screen and progress screen
     fs_clamp_view_to_screen_rect(mLoginPanelHolder.get(), home_rect, true, true);
+    // The login panel is created at full window size. If it is added after the holder was moved
+    // onto the world monitor, it sticks out of the holder, and clicks outside the holder never
+    // reach it (only the keyboard works). Keep it exactly filling the holder.
+    if (LLView* login_holder = mLoginPanelHolder.get())
+    {
+        const LLRect holder_rect = login_holder->getLocalRect();
+        for (LLView* child : *login_holder->getChildList())
+        {
+            if (child && child->getRect() != holder_rect)
+            {
+                child->setShape(holder_rect);
+            }
+        }
+    }
     fs_clamp_view_to_screen_rect(fs_find_view(mProgressViewHandle, mMainView, "progress_view"), home_rect, true, true);
     if (mProgressViewMini && mProgressViewMini->getParent())
     {
