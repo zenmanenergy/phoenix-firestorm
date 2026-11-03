@@ -1,5 +1,5 @@
 Warning: no --id argument or AUTOBUILD_BUILD_ID environment variable specified;
-    using a value from the UTC date and time (263070507), which may not be unique
+    using a value from the UTC date and time (263070535), which may not be unique
  'C:\cygwin64\bin\bash.exe' '../scripts/configure_firestorm.sh' '--build' '--version' '--opensim' '--version' '--platform windows'
        PLATFORM: windows
             KDU: false
@@ -28,11 +28,11 @@ Setting environment variables for Visual Studio...
 Versioning...
 /cygdrive/c/Apache24/htdocs/personalProjects/phoenix-firestorm /cygdrive/c/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64
 Channel: Firestorm-private-DESKTOP-RBPD1SQ
-Version: 7.2.5.81794 [13178333a8]
+Version: 7.2.5.81795 [447df45da3]
 /cygdrive/c/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64
 Building windows...
 MSBuild version 17.14.60+43b635718 for .NET Framework
-Build started 11/3/2026 12:07:22 AM.
+Build started 11/3/2026 12:35:12 AM.
 
 Project "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\Firestorm.sln" on node 1 (Build target(s)).
 ValidateSolutionConfiguration:
@@ -1904,5 +1904,5 @@ Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:17:14.73
+Time Elapsed 00:14:52.41
 finished
