@@ -362,6 +362,7 @@ LLViewerObject* LLViewerObjectList::processObjectUpdateFromCache(LLVOCacheEntry*
     // <FS:Ansariel> Don't process derendered objects
     if (mDerendered.end() != mDerendered.find(fullid))
     {
+        noteDerenderedUpdate(fullid, regionp, local_id); // <FS:Steve/>
         return NULL;
     }
     // </FS:Ansariel>
@@ -567,6 +568,7 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
                 {
                     LL_DEBUGS() << "update for unknown localid " << local_id << " host " << gMessageSystem->getSender() << ":" << gMessageSystem->getSenderPort() << LL_ENDL;
                     mNumUnknownUpdates++;
+                    recoverUnknownObject(regionp, local_id); // <FS:Steve/>
                 }
             }
         }
@@ -582,6 +584,7 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
             {
                 // LL_WARNS() << "update for unknown localid " << local_id << " host " << gMessageSystem->getSender() << LL_ENDL;
                 mNumUnknownUpdates++;
+                recoverUnknownObject(regionp, local_id); // <FS:Steve/>
             }
             else
             {
@@ -682,6 +685,7 @@ void LLViewerObjectList::processObjectUpdate(LLMessageSystem *mesgsys,
             if (FSAssetBlacklist::getInstance()->isBlacklisted(fullid, (pcode == LL_PCODE_LEGACY_AVATAR ? LLAssetType::AT_PERSON : LLAssetType::AT_OBJECT)))
             {
                 LL_INFOS() << "Blacklisted " << (pcode == LL_PCODE_LEGACY_AVATAR ? "avatar" : "object") << " blocked." << LL_ENDL;
+                noteDerenderedUpdate(fullid, regionp, local_id); // <FS:Steve/>
                 continue;
             }
 
@@ -2278,6 +2282,7 @@ LLViewerObject *LLViewerObjectList::createObject(const LLPCode pcode, LLViewerRe
     // <FS:Ansariel> Don't create derendered objects
     if (mDerendered.end() != mDerendered.find(uuid))
     {
+        noteDerenderedUpdate(uuid, regionp, local_id); // <FS:Steve/>
         return NULL;
     }
     // </FS:Ansariel>
@@ -2609,11 +2614,168 @@ void LLViewerObjectList::resetDerenderList(bool force /*= false*/)
 void LLViewerObjectList::addDerenderedItem( LLUUID const &aId, bool aPermanent )
 {
     mDerendered[ aId ] = aPermanent;
+    rememberDerenderLocation(aId); // <FS:Steve/>
 }
+
+// <FS:Steve> Remember where it is, before it gets killed, so it can come back later
+void LLViewerObjectList::rememberDerenderLocation(const LLUUID& aId)
+{
+    if (LLViewerObject* objectp = findObject(aId); objectp && objectp->getRegion())
+    {
+        DerenderedLocation& location = mDerenderedLocations[aId];
+        if (location.mRegionHandle != objectp->getRegion()->getHandle())
+        {
+            location.mLocalIDs.clear();
+        }
+        location.mRegionHandle = objectp->getRegion()->getHandle();
+        location.mRootLocalID = objectp->getLocalID();
+        rememberDerenderedObject(objectp, location);
+        LL_INFOS("Derender") << "Derendered " << aId << ", remembering " << location.mLocalIDs.size() << " object(s) in " << objectp->getRegion()->getName() << LL_ENDL;
+    }
+    else
+    {
+        LL_INFOS("Derender") << "Derendered " << aId << " (not in view, location not known yet)" << LL_ENDL;
+    }
+}
+// </FS:Steve>
 void LLViewerObjectList::removeDerenderedItem( LLUUID const &aId )
 {
     mDerendered.erase( aId );
+
+    // <FS:Steve> Taking something off the blacklist used to leave it invisible until you
+    // teleported away and back or relogged, because the viewer had thrown it away and the
+    // server had no reason to send it again. Ask the server for it (and its child prims and
+    // attachments) now, so it reappears straight away.
+    auto it = mDerenderedLocations.find(aId);
+    if (it == mDerenderedLocations.end())
+    {
+        // Look for it in the object caches of the regions we are connected to
+        for (LLViewerRegion* regionp : LLWorld::getInstance()->getRegionList())
+        {
+            if (U32 local_id = regionp ? regionp->findCachedLocalID(aId) : 0)
+            {
+                const bool revived = regionp->reviveCacheEntry(local_id);
+                LL_INFOS("Derender") << "Un-derendered " << aId << ": found in the object cache of " << regionp->getName()
+                                     << (revived ? ", restored" : ", could not restore") << LL_ENDL;
+                if (revived)
+                {
+                    return;
+                }
+            }
+        }
+
+        // Not cached (avatars never are). For the next few seconds, ask the server for the
+        // full version of anything it sends updates about that we don't have.
+        mRecoverUnknown = true;
+        mRecoverUnknownTimer.reset();
+        mRecoverRequested.clear();
+        LL_INFOS("Derender") << "Un-derendered " << aId << ", location not known; asking the server for unknown objects for a few seconds" << LL_ENDL;
+        return;
+    }
+    const DerenderedLocation location = it->second;
+    mDerenderedLocations.erase(it);
+
+    LLViewerRegion* regionp = LLWorld::getInstance()->getRegionFromHandle(location.mRegionHandle);
+    if (!regionp || location.mLocalIDs.empty())
+    {
+        LL_INFOS("Derender") << "Un-derendered " << aId << ", but its region is no longer connected" << LL_ENDL;
+        return;
+    }
+
+    // Objects (not avatars) are usually still in the region's object cache, just switched off.
+    // Switch them back on directly: root first, then the child prims.
+    S32 revived = 0;
+    S32 requested = 0;
+    std::vector<U32> ordered;
+    ordered.reserve(location.mLocalIDs.size());
+    if (location.mRootLocalID && location.mLocalIDs.count(location.mRootLocalID))
+    {
+        ordered.push_back(location.mRootLocalID);
+    }
+    for (U32 local_id : location.mLocalIDs)
+    {
+        if (local_id != location.mRootLocalID)
+        {
+            ordered.push_back(local_id);
+        }
+    }
+    for (U32 local_id : ordered)
+    {
+        if (regionp->reviveCacheEntry(local_id))
+        {
+            ++revived;
+        }
+        else
+        {
+            // Not cached (avatars never are): ask the server to send it again
+            regionp->addCacheMissFull(local_id);
+            ++requested;
+        }
+    }
+    if (requested > 0)
+    {
+        regionp->requestCacheMisses();
+    }
+    LL_INFOS("Derender") << "Un-derendered " << aId << ": " << revived << " restored from cache, " << requested << " re-requested from " << regionp->getName() << LL_ENDL;
+    // </FS:Steve>
 }
+
+// <FS:Steve>
+void LLViewerObjectList::rememberDerenderedObject(LLViewerObject* objectp, DerenderedLocation& location)
+{
+    if (!objectp || objectp->getRegion() == nullptr || objectp->getRegion()->getHandle() != location.mRegionHandle)
+    {
+        return;
+    }
+    location.mLocalIDs.insert(objectp->getLocalID());
+    for (LLViewerObject* child : objectp->getChildren())
+    {
+        // Avatars sitting on a derendered object are not part of it
+        if (child && !(child->isAvatar() && !objectp->isAvatar()))
+        {
+            rememberDerenderedObject(child, location);
+        }
+    }
+}
+
+void LLViewerObjectList::recoverUnknownObject(LLViewerRegion* regionp, U32 local_id)
+{
+    constexpr F32 RECOVER_SECONDS = 15.f;
+    if (!mRecoverUnknown || !regionp || local_id == 0)
+    {
+        return;
+    }
+    if (mRecoverUnknownTimer.getElapsedTimeF32() > RECOVER_SECONDS)
+    {
+        LL_INFOS("Derender") << "Stopped asking for unknown objects (" << mRecoverRequested.size() << " requested)" << LL_ENDL;
+        mRecoverUnknown = false;
+        mRecoverRequested.clear();
+        return;
+    }
+    if (mRecoverRequested.insert({ regionp->getHandle(), local_id }).second)
+    {
+        regionp->addCacheMissFull(local_id);
+        regionp->requestCacheMisses();
+    }
+}
+
+void LLViewerObjectList::noteDerenderedUpdate(const LLUUID& id, const LLViewerRegion* regionp, U32 local_id)
+{
+    // The server sent an update for something we are hiding (for example something blacklisted
+    // in an earlier session). Note where it is so it can be asked for again if it is un-blacklisted.
+    if (!regionp || local_id == 0)
+    {
+        return;
+    }
+    DerenderedLocation& location = mDerenderedLocations[id];
+    if (location.mRegionHandle != regionp->getHandle())
+    {
+        location.mLocalIDs.clear();
+        location.mRegionHandle = regionp->getHandle();
+    }
+    location.mLocalIDs.insert(local_id);
+}
+// </FS:Steve>
 // </FS:ND>
 
 // <FS:Ansariel> FIRE-20288: Option to render friends only

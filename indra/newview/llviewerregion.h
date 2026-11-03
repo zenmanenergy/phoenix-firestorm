@@ -409,6 +409,8 @@ public:
     LLVOCacheEntry* getCacheEntryForOctree(U32 local_id);
     LLVOCacheEntry* getCacheEntry(U32 local_id, bool valid = true);
     bool probeCache(U32 local_id, U32 crc, U32 flags, U8 &cache_miss_type);
+    bool reviveCacheEntry(U32 local_id); // <FS:Steve> bring back a derendered object from the cache
+    U32 findCachedLocalID(const LLUUID& id); // <FS:Steve> local ID of a cached object, 0 if not cached
     U64 getRegionCacheHitCount() { return mRegionCacheHitCount; }
     U64 getRegionCacheMissCount() { return mRegionCacheMissCount; }
     void requestCacheMisses();

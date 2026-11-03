@@ -2559,6 +2559,7 @@ void LLAvatarActions::onDerenderAvatarNameLookup(const LLUUID& agent_id, const L
     LLViewerObject* av_obj = gObjectList.findObject(agent_id);
     if (av_obj)
     {
+        gObjectList.rememberDerenderLocation(agent_id); // <FS:Steve> so it can come back when un-derendered
         gObjectList.killObject(av_obj);
     }
 }

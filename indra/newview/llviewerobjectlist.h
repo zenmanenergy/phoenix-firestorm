@@ -29,6 +29,7 @@
 
 #include <map>
 #include <set>
+#include "llframetimer.h" // <FS:Steve/>
 
 // common includes
 #include "llstring.h"
@@ -258,6 +259,26 @@ private:
 // <FS:ND> Remember objects we did derender. We might get object updates for them that create new instances. In those cases we kill them again.
 private:
     std::map< LLUUID, bool > mDerendered;
+    // <FS:Steve> Where each derendered object was (region + local IDs of it and its children),
+    // so it can be asked for again from the server when it is taken off the blacklist.
+    struct DerenderedLocation
+    {
+        U64 mRegionHandle = 0;
+        U32 mRootLocalID = 0;      // revived first, so its children can attach to it
+        std::set<U32> mLocalIDs;
+    };
+    std::map< LLUUID, DerenderedLocation > mDerenderedLocations;
+    void rememberDerenderedObject(LLViewerObject* objectp, DerenderedLocation& location);
+    // For a short while after un-derendering something whose location we never learned,
+    // updates for unknown objects trigger a request for the full object, so it comes back.
+    LLFrameTimer mRecoverUnknownTimer;
+    bool mRecoverUnknown = false;
+    std::set<std::pair<U64, U32>> mRecoverRequested;
+    void recoverUnknownObject(LLViewerRegion* regionp, U32 local_id);
+public:
+    void noteDerenderedUpdate(const LLUUID& id, const LLViewerRegion* regionp, U32 local_id);
+    void rememberDerenderLocation(const LLUUID& id);
+    // </FS:Steve>
 public:
     void resetDerenderList(bool force = false);
     void addDerenderedItem( LLUUID const &, bool );

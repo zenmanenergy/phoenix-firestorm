@@ -2942,6 +2942,7 @@ LLViewerRegion::eCacheUpdateResult LLViewerRegion::cacheFullUpdate(LLDataPackerB
 
     if (entry)
     {
+        const bool was_valid = entry->isValid(); // <FS:Steve/>
         entry->setValid();
 
         // we've seen this object before
@@ -2952,6 +2953,15 @@ LLViewerRegion::eCacheUpdateResult LLViewerRegion::cacheFullUpdate(LLDataPackerB
             // Record a hit
             entry->recordDupe();
             result = CACHE_UPDATE_DUPE;
+
+            // <FS:Steve> An entry that was killed (e.g. derendered) and is now being sent again
+            // has to be put back into the scene, the same way probeCache does it. Otherwise the
+            // object stays invisible even though the server sent it.
+            if (!was_valid && !entry->isState(LLVOCacheEntry::ACTIVE))
+            {
+                decodeBoundingInfo(entry);
+            }
+            // </FS:Steve>
         }
         else //CRC changed
         {
@@ -3140,6 +3150,51 @@ bool LLViewerRegion::probeCache(U32 local_id, U32 crc, U32 flags, U8 &cache_miss
 
     return false;
 }
+
+// <FS:Steve> Put a cached object that was killed (derendered) back into the scene.
+// Returns false if the cache doesn't have it, so it has to be asked for from the server.
+bool LLViewerRegion::reviveCacheEntry(U32 local_id)
+{
+    LLVOCacheEntry* entry = getCacheEntry(local_id, false);
+    if (!entry || !entry->getDP())
+    {
+        return false;
+    }
+    if (!sVOCacheCullingEnabled)
+    {
+        gObjectList.processObjectUpdateFromCache(entry, this);
+        return true;
+    }
+    if (entry->isState(LLVOCacheEntry::ACTIVE))
+    {
+        return true; // already in the scene
+    }
+    entry->setValid();
+    decodeBoundingInfo(entry);
+    return true;
+}
+
+U32 LLViewerRegion::findCachedLocalID(const LLUUID& id)
+{
+    for (auto& [local_id, entry] : mImpl->mCacheMap)
+    {
+        LLDataPacker* dp = entry ? entry->getDP() : nullptr;
+        if (!dp)
+        {
+            continue;
+        }
+        LLUUID entry_id;
+        dp->reset();
+        dp->unpackUUID(entry_id, "ID");
+        dp->reset();
+        if (entry_id == id)
+        {
+            return local_id;
+        }
+    }
+    return 0;
+}
+// </FS:Steve>
 
 void LLViewerRegion::addCacheMissFull(const U32 local_id)
 {
