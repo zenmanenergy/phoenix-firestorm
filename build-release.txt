@@ -1,5 +1,5 @@
 Warning: no --id argument or AUTOBUILD_BUILD_ID environment variable specified;
-    using a value from the UTC date and time (263070535), which may not be unique
+    using a value from the UTC date and time (263112334), which may not be unique
  'C:\cygwin64\bin\bash.exe' '../scripts/configure_firestorm.sh' '--build' '--version' '--opensim' '--version' '--platform windows'
        PLATFORM: windows
             KDU: false
@@ -28,11 +28,11 @@ Setting environment variables for Visual Studio...
 Versioning...
 /cygdrive/c/Apache24/htdocs/personalProjects/phoenix-firestorm /cygdrive/c/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64
 Channel: Firestorm-private-DESKTOP-RBPD1SQ
-Version: 7.2.5.81795 [447df45da3]
+Version: 7.2.5.81796 [8fd9aa2e07]
 /cygdrive/c/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64
 Building windows...
 MSBuild version 17.14.60+43b635718 for .NET Framework
-Build started 11/3/2026 12:35:12 AM.
+Build started 11/7/2026 6:34:07 PM.
 
 Project "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\Firestorm.sln" on node 1 (Build target(s)).
 ValidateSolutionConfiguration:
@@ -330,6 +330,151 @@ PrepareForBuild:
 InitializeBuildStatus:
   Creating "x64\Release\copy_w_viewer_manifest\copy_w_v.E271B8DC.tlog\unsuccessfulbuild" because "AlwaysCreate" was specified.
   Touching "x64\Release\copy_w_viewer_manifest\copy_w_v.E271B8DC.tlog\unsuccessfulbuild".
+CustomBuild:
+  "The build of 'C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\CMakeFiles\999d37df4241069f769cfe1f6982ce94\copy_touched.bat.rule' depends on 'C:\APACHE24\HTDOCS\PERSONALPROJECTS\PHOENIX-FIRESTORM\BUILD-VC170-64\NEWVIEW\PACKAGES-INFO.TXT' which is produced by the build of 'C:\Apache24\htdocs\personalProjects\phoenix-firestorm\autobuild.xml'. The items cannot be built in parallel."
+  "The build of 'C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\CMakeFiles\7721de2df134dfbe943b580c4e32fc78\copy_w_viewer_manifest.rule' depends on 'C:\APACHE24\HTDOCS\PERSONALPROJECTS\PHOENIX-FIRESTORM\BUILD-VC170-64\NEWVIEW\RELEASE\COPY_TOUCHED.BAT' which is produced by the build of 'C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\CMakeFiles\999d37df4241069f769cfe1f6982ce94\copy_touched.bat.rule'. The items cannot be built in parallel."
+  Generating packages-info.txt for the about box
+  Performing viewer_manifest copy
+  C:\Program Files\Python311\python.exe \
+  C:/Apache24/htdocs/personalProjects/phoenix-firestorm/indra/newview/viewer_manifest.py --actions=copy --arch=x86_64 --artwork=C:/Apache24/htdocs/personalProjects/phoenix-firestorm/indra/newview --bugsplat= --discord= --fmodstudio=OFF --openal=ON --tracy=OFF --avx2=OFF --build=C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview --buildtype=Release --channel=Firestorm-MultiMonitor --configuration=Release --dest=C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/Release --grid=agni --source=C:/Apache24/htdocs/personalProjects/phoenix-firestorm/indra/newview --touch=C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/Release/copy_touched.bat --versionfile=C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/viewer_version.txt --viewer_flavor=oss
+  Source tree: C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview
+  Artwork tree: C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview
+  Build tree: C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview
+  Destination tree: C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview\Release
+  Option: source = C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview
+  Option: artwork = C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview
+  Option: build = C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview
+  Option: dest = C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview\Release
+  Option: actions = ['copy']
+  Option: arch = x86_64
+  Option: bugsplat = 
+  Option: discord = 
+  Option: fmodstudio = OFF
+  Option: openal = ON
+  Option: tracy = OFF
+  Option: avx2 = OFF
+  Option: buildtype = Release
+  Option: channel = Firestorm-MultiMonitor
+  Option: configuration = Release
+  Option: grid = None
+  Option: touch = C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/Release/copy_touched.bat
+  Option: versionfile = C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/viewer_version.txt
+  Option: viewer_flavor = oss
+  Option: bundleid = com.secondlife.indra.viewer
+  Option: platform = windows
+  Option: velopack = OFF
+  Option: version = ['7', '2', '5', '81796']
+  ================ Creating base package
+  Processing ../../scripts/messages/message_template.msg => app_settings/message_template.msg ... 1 files
+  Processing dictionaries => app_settings\dictionaries ... 22 files
+  Processing js => skins/default/html/common/equirectangular\js ... 4 files
+  Processing fonts => fonts ... 11 files
+  Processing xui => skins/default\xui ... 11 files
+  Processing ..\llplugin\slplugin\Release\slplugin.exe => slplugin.exe ... 1 files
+  Processing llwebrtc.dll => llwebrtc.dll ... 1 files
+  Processing glod.dll => glod.dll ... 1 files
+  Processing OpenAL32.dll => OpenAL32.dll ... 1 files
+  Processing alut.dll => alut.dll ... 1 files
+  Processing openjp2.dll => openjp2.dll ... 1 files
+  Processing msvcp140.dll => msvcp140.dll ... 1 files
+  Processing msvcp140_1.dll => msvcp140_1.dll ... 1 files
+  Processing msvcp140_2.dll => msvcp140_2.dll ... 1 files
+  Processing msvcp140_atomic_wait.dll => msvcp140_atomic_wait.dll ... 1 files
+  Processing msvcp140_codecvt_ids.dll => msvcp140_codecvt_ids.dll ... 1 files
+  Processing vcruntime140.dll => vcruntime140.dll ... 1 files
+  Processing vcruntime140_1.dll => vcruntime140_1.dll ... 1 files
+  Processing vcruntime140_threads.dll => vcruntime140_threads.dll ... 1 files
+  Processing SLVoice.exe => SLVoice.exe ... 1 files
+  Processing vivoxsdk_x64.dll => vivoxsdk_x64.dll ... 1 files
+  Processing ortp_x64.dll => ortp_x64.dll ... 1 files
+  Processing growl.dll => growl.dll ... 1 files
+  Processing growl++.dll => growl++.dll ... 1 files
+  Processing licenses-win32.txt => licenses.txt ... 1 files
+  Processing featuretable.txt => featuretable.txt ... 1 files
+  Processing cube.dae => cube.dae ... 1 files
+  Processing ca-bundle.crt => ca-bundle.crt ... 1 files
+  Processing VivoxAUP.txt => VivoxAUP.txt ... 1 files
+  Processing media_plugin_cef.dll => llplugin\media_plugin_cef.dll ... 1 files
+  Processing media_plugin_libvlc.dll => llplugin\media_plugin_libvlc.dll ... 1 files
+  Processing chrome_elf.dll => llplugin\chrome_elf.dll ... 1 files
+  Processing d3dcompiler_47.dll => llplugin\d3dcompiler_47.dll ... 1 files
+  Processing dxcompiler.dll => llplugin\dxcompiler.dll ... 1 files
+  Processing dxil.dll => llplugin\dxil.dll ... 1 files
+  Processing libcef.dll => llplugin\libcef.dll ... 1 files
+  Processing libEGL.dll => llplugin\libEGL.dll ... 1 files
+  Processing libGLESv2.dll => llplugin\libGLESv2.dll ... 1 files
+  Processing v8_context_snapshot.bin => llplugin\v8_context_snapshot.bin ... 1 files
+  Processing vk_swiftshader.dll => llplugin\vk_swiftshader.dll ... 1 files
+  Processing vk_swiftshader_icd.json => llplugin\vk_swiftshader_icd.json ... 1 files
+  Processing vulkan-1.dll => llplugin\vulkan-1.dll ... 1 files
+  Processing dullahan_host.exe => llplugin\dullahan_host.exe ... 1 files
+  Processing msvcp140.dll => llplugin\msvcp140.dll ... 1 files
+  Processing vcruntime140.dll => llplugin\vcruntime140.dll ... 1 files
+  Processing vcruntime140_1.dll => llplugin\vcruntime140_1.dll ... 1 files
+  Processing chrome_100_percent.pak => llplugin\chrome_100_percent.pak ... 1 files
+  Processing chrome_200_percent.pak => llplugin\chrome_200_percent.pak ... 1 files
+  Processing resources.pak => llplugin\resources.pak ... 1 files
+  Processing icudtl.dat => llplugin\icudtl.dat ... 1 files
+  Processing am.pak => llplugin\locales\am.pak ... 1 files
+  Processing ar.pak => llplugin\locales\ar.pak ... 1 files
+  Processing bg.pak => llplugin\locales\bg.pak ... 1 files
+  Processing bn.pak => llplugin\locales\bn.pak ... 1 files
+  Processing ca.pak => llplugin\locales\ca.pak ... 1 files
+  Processing cs.pak => llplugin\locales\cs.pak ... 1 files
+  Processing da.pak => llplugin\locales\da.pak ... 1 files
+  Processing de.pak => llplugin\locales\de.pak ... 1 files
+  Processing el.pak => llplugin\locales\el.pak ... 1 files
+  Processing en-GB.pak => llplugin\locales\en-GB.pak ... 1 files
+  Processing en-US.pak => llplugin\locales\en-US.pak ... 1 files
+  Processing es-419.pak => llplugin\locales\es-419.pak ... 1 files
+  Processing es.pak => llplugin\locales\es.pak ... 1 files
+  Processing et.pak => llplugin\locales\et.pak ... 1 files
+  Processing fa.pak => llplugin\locales\fa.pak ... 1 files
+  Processing fi.pak => llplugin\locales\fi.pak ... 1 files
+  Processing fil.pak => llplugin\locales\fil.pak ... 1 files
+  Processing fr.pak => llplugin\locales\fr.pak ... 1 files
+  Processing gu.pak => llplugin\locales\gu.pak ... 1 files
+  Processing he.pak => llplugin\locales\he.pak ... 1 files
+  Processing hi.pak => llplugin\locales\hi.pak ... 1 files
+  Processing hr.pak => llplugin\locales\hr.pak ... 1 files
+  Processing hu.pak => llplugin\locales\hu.pak ... 1 files
+  Processing id.pak => llplugin\locales\id.pak ... 1 files
+  Processing it.pak => llplugin\locales\it.pak ... 1 files
+  Processing ja.pak => llplugin\locales\ja.pak ... 1 files
+  Processing kn.pak => llplugin\locales\kn.pak ... 1 files
+  Processing ko.pak => llplugin\locales\ko.pak ... 1 files
+  Processing lt.pak => llplugin\locales\lt.pak ... 1 files
+  Processing lv.pak => llplugin\locales\lv.pak ... 1 files
+  Processing ml.pak => llplugin\locales\ml.pak ... 1 files
+  Processing mr.pak => llplugin\locales\mr.pak ... 1 files
+  Processing ms.pak => llplugin\locales\ms.pak ... 1 files
+  Processing nb.pak => llplugin\locales\nb.pak ... 1 files
+  Processing nl.pak => llplugin\locales\nl.pak ... 1 files
+  Processing pl.pak => llplugin\locales\pl.pak ... 1 files
+  Processing pt-BR.pak => llplugin\locales\pt-BR.pak ... 1 files
+  Processing pt-PT.pak => llplugin\locales\pt-PT.pak ... 1 files
+  Processing ro.pak => llplugin\locales\ro.pak ... 1 files
+  Processing ru.pak => llplugin\locales\ru.pak ... 1 files
+  Processing sk.pak => llplugin\locales\sk.pak ... 1 files
+  Processing sl.pak => llplugin\locales\sl.pak ... 1 files
+  Processing sr.pak => llplugin\locales\sr.pak ... 1 files
+  Processing sv.pak => llplugin\locales\sv.pak ... 1 files
+  Processing sw.pak => llplugin\locales\sw.pak ... 1 files
+  Processing ta.pak => llplugin\locales\ta.pak ... 1 files
+  Processing te.pak => llplugin\locales\te.pak ... 1 files
+  Processing th.pak => llplugin\locales\th.pak ... 1 files
+  Processing tr.pak => llplugin\locales\tr.pak ... 1 files
+  Processing uk.pak => llplugin\locales\uk.pak ... 1 files
+  Processing vi.pak => llplugin\locales\vi.pak ... 1 files
+  Processing zh-CN.pak => llplugin\locales\zh-CN.pak ... 1 files
+  Processing zh-TW.pak => llplugin\locales\zh-TW.pak ... 1 files
+  Processing libvlc.dll => llplugin\libvlc.dll ... 1 files
+  Processing libvlccore.dll => llplugin\libvlccore.dll ... 1 files
+  Processing plugins/ => llplugin\plugins/ ... 367 files
+  Processing compatibility.manifest => slplugin.exe.manifest ... 1 files
+  Processing compatibility.manifest => llplugin\dullahan_host.exe.manifest ... 1 files
+  ================ Created base package  copied_deps
+  touched C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/Release/copy_touched.bat
 FinalizeBuildStatus:
   Deleting file "x64\Release\copy_w_viewer_manifest\copy_w_v.E271B8DC.tlog\unsuccessfulbuild".
   Touching "x64\Release\copy_w_viewer_manifest\copy_w_v.E271B8DC.tlog\copy_w_viewer_manifest.lastbuildstate".
@@ -585,433 +730,19 @@ CustomBuild:
   All outputs are up-to-date.
 ClCompile:
   All outputs are up-to-date.
-  C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\CL.exe /c /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llaudio" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcommon" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmath" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmeshoptimizer" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmessage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llfilesystem" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcorehttp" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llxml" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcharacter" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llimage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llinventory" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llplugin" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llprimitive" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llrender" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwindow" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llphysicsextensionsos" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llui" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwebrtc" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\viewer_components\login" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llappearance" /Zi /nologo /W3 /WX /diagnostics:column /MP /O2 /Ob2 /Oi /Ot /Oy- /D _UNICODE /D UNICODE /D WIN32 /D _WINDOWS /D EBUG /D LL_RELEASE=1 /D LL_RELEASE_FOR_DOWNLOAD=1 /D NDEBUG /D _SECURE_STL=0 /D _HAS_ITERATOR_DEBUGGING=0 /D LL_WINDOWS=1 /D UNICODE /D _UNICODE /D WINVER=0x0601 /D _WIN32_WINNT=0x0601 /D LL_OS_DRAGDROP_ENABLED=1 /D LIB_NDOF=1 /D OPENSIM /D ADDRESS_SIZE=64 /D BOOST_BIND_GLOBAL_PLACEHOLDERS /D GLM_FORCE_DEFAULT_ALIGNED_GENTYPES=1 /D GLM_ENABLE_EXPERIMENTAL=1 /D SSE2NEON_SUPPRESS_WARNINGS=1 /D WIN32_LEAN_AND_MEAN /D NOMINMAX /D _CRT_SECURE_NO_WARNINGS /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_OBSOLETE_NO_WARNINGS /D _WINSOCK_DEPRECATED_NO_WARNINGS /D APR_DECLARE_STATIC=1 /D APU_DECLARE_STATIC=1 /D API_DECLARE_STATIC=1 /D XML_STATIC=1 /D LL_OPENAL=1 /D HUNSPELL_STATIC=1 /D "CMAKE_INTDIR=\"Release\"" /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /std:c++20 /permissive- /Yu"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /Fp"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/firestorm-bin.dir/Release//cmake_pch.pch" /Fo"firestorm-bin.dir\Release\\" /Fd"firestorm-bin.dir\Release\vc143.pdb" /external:W0 /TP /FI"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /errorReport:queue  /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/apr-1" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/zlib-ng" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/meshoptimizer" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/nghttp2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/AL" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/openjpeg" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/libpng16" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/freetype2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada/1.4" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/vhacd" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/hunspell" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/glod" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/discord-rpc" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/Growl" /Zo /c /bigobj "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\NACLantispam.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\NACLfloaterexploresounds.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\alfloaterregiontracker.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\animationexplorer.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\ao.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\aoengine.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\aoset.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\chatbar_as_cmdline.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsareasearch.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsassetblacklist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsavatarsearchmenu.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fschathistory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fschatoptionsmenu.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fscommon.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsdata.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsdiscordconnect.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsdroptarget.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsexportperms.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterassetblacklist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloateravataralign.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloateravatarrendersettings.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloatercontacts.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterexport.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterim.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterimcontainer.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterimport.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaternearbychat.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterpartialinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterperformance.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterplacedetails.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterposer.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterposestand.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterprotectedfolders.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloatersearch.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloatervramusage.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsfloaterwearablefavorites.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsgrouptitleregionmgr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsinventorycustomtabs.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fslslbridge.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fslslpreproc.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsnearbychatcontrol.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsnearbychathub.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsnearbychatvoicemonitor.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsnewitemctrl.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fspanelcontactsets.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fspanelface.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fspanelprefs.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fspanelradar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsposestate.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsradar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsradarentry.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsradarlistctrl.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsradarmenu.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsregiongrouptag.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsslurl.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fsworldmapmessage.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lfsimfeaturehandler.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lggcontactsets.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llagent.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llagentbenefits.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llagentcamera.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llagentlanguage.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llagentlistener.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llagentui.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llagentwearables.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llagentwearablesfetch.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llaisapi.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llappearancelistener.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llappearancemgr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llattachmentsmgr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llavataractions.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llavatarlist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llavatarrenderinfoaccountant.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llavatarrendernotifier.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llcallingcard.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llchannelmanager.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llchatitemscontainerctrl.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llchiclet.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llchicletbar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llcofwearables.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llcompilequeue.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llcontrolavatar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldelayedgestureerror.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldrawable.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldrawpool.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldrawpoolalpha.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldrawpoolavatar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldrawpoolterrain.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldrawpooltree.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldrawpoolwater.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lldrawpoolwlsky.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llenvironment.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llestateinfomodel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lleventpoll.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llface.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfavoritesbar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfilteredwearablelist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llflexibleobject.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llflickrconnect.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloater360capture.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterabout.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterauction.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterautoreplacesettings.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloateravatarpicker.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloateravatartextures.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterbulkpermission.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterbump.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterbuy.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterbuycontents.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterbuyland.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterbvhpreview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterchangeitemthumbnail.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterconversationpreview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatercreatelandmark.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterdirectory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatereditenvironmentbase.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatereditextdaycycle.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterevent.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterexperiencepicker.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterexperienceprofile.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterexperiences.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterfixedenvironment.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterflickr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatergesture.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatergodtools.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterhoverheight.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterimagepreview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterimnearbychathandler.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterinspect.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterinventorythumbnailshelper.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterland.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterlandholdings.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterlinkreplace.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatermarketplacelistings.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatermodeluploadbase.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatermyenvironment.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatermyscripts.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaternotificationstabbed.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterobjectweights.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloateropenobject.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterpathfindingcharacters.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterpathfindingobjects.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterpay.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterperms.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterpreference.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterpreviewtrash.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterprofile.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterproperties.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterregiondebugconsole.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterregioninfo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterregionrestarting.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterreporter.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterscriptdebug.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterscriptlimits.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterscriptrecover.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatersettingsdebug.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatersidepanelcontainer.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatersimplesnapshot.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatertelehub.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatertools.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatertopobjects.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloatertranslationsettings.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfloaterworldmap.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfolderviewmodelinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llfriendcard.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llgesturemgr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llgiveinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llglsandbox.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llgltfmateriallist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llgroupactions.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llgroupmgr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llheroprobemanager.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llhudeffect.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llhudeffectbeam.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llhudeffectlookat.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llhudeffectpointat.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llhudeffectresetskeleton.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llhudeffecttrail.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llhudmanager.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llhudview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llimprocessing.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llimview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinspectavatar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinspectobject.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinspectremoteobject.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinspecttexture.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventorybridge.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventoryfilter.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventoryfunctions.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventorygallery.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventorygallerymenu.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventoryitemslist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventorylistener.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventorylistitem.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventorymodel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventorymodelbackgroundfetch.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventoryobserver.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llinventorypanel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lllandmarkactions.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lllegacyatmospherics.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lllocalbitmaps.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lllocationinputctrl.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmanip.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmanipscale.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmaniptranslate.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmarketplacefunctions.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmaterialeditor.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmaterialmgr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmediadataclient.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmenuoptionpathfindingrebakenavmesh.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmeshrepository.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmodelpreview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmoveview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llmutelist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnavigationbar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnearbyvoicemoderation.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnetmap.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnotificationgrouphandler.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnotificationhandlerutil.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnotificationlistitem.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnotificationlistview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnotificationstorage.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llnotificationtiphandler.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lloutfitgallery.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lloutfitobserver.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lloutfitslist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelappearancetab.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelblockedlist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelclassified.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelcontents.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpaneldirbrowser.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpaneldirland.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpaneleditwearable.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelenvironment.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpaneleventinfo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelexperiencelisteditor.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelexperiencelog.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelexperiencepicker.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelexperiences.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelface.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelgroup.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelgroupbulk.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelgroupbulkban.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelgroupexperiences.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelgroupinvite.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelgrouplandmoney.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelgroupnotices.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelland.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanellandaudio.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanellandmarkinfo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanellandmarks.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanellandmedia.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelmaininventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelmarketplaceinbox.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelmarketplaceinboxinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelnearbymedia.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelobject.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelobjectinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelopenregionsettings.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpaneloutfitedit.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpaneloutfitsinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelpeople.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelpeoplemenus.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelpermissions.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelplaceinfo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelplaceprofile.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelplaces.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelplacestab.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelprimmediacontrols.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelprofile.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelprofileclassifieds.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelprofilepicks.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelsnapshotinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelsnapshotpostcard.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelteleporthistory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelvolume.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpanelwearing.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpathfindingmanager.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpathfindingnavmeshzone.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpathfindingpathtool.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpbrterrainfeatures.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpersistentnotificationstorage.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llplacesfolderview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llplacesinventorybridge.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llplacesinventorypanel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpostcard.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpreview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpreviewgesture.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpreviewnotecard.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpreviewscript.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpreviewsound.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llpreviewtexture.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llproductinforequest.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llreflectionmap.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llreflectionmapmanager.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llregioninfomodel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llregionposition.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llremoteparcelrequest.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsaveoutfitcombobtn.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsceneview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llscriptfloater.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llselectmgr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsettingspicker.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsettingsvo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsidepanelappearance.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsidepanelinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsidepanelinventorysubpanel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsidepaneliteminfo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsidepaneltaskinfo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsky.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsnapshotlivepreview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llspatialpartition.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llspeakers.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llstartup.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llstatslistener.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llstatusbar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsurface.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsurfacepatch.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llsyntaxid.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llteleporthistory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llterrainpaintmap.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltexturectrl.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltexturefetch.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltextureinfo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltexturestats.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltextureview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoastgroupnotifypanel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoastnotifypanel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolbarview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolbrush.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltooldraganddrop.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolgrab.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolobjpicker.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolpie.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolpipette.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolplacer.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolselect.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltoolselectrect.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lltracker.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\lluiavatar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llurldispatcher.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerassetstorage.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerassetupload.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerattachmenu.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvieweraudio.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewercamera.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerchat.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewercontrol.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerdisplay.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerdisplayname.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerfloaterreg.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewergesture.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerjointattachment.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewermedia.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewermediafocus.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewermenufile.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewermessage.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerobject.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerobjectlist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvieweroctree.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerparcelaskplay.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerparcelmedia.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerparcelmediaautoplay.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerparcelmgr.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerparceloverlay.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerpartsim.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerpartsource.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerregion.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerstats.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerstatsrecorder.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewertexlayer.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewertexteditor.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewertexturelist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerwearable.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerwindow.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvlcomposition.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvlmanager.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvoavatar.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvoavatarself.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvocache.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvograss.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvoicechannel.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvoiceclient.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvoicevivox.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvoicewebrtc.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvopartgroup.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvosky.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvosurfacepatch.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvotree.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvovolume.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvowater.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llwearableitemslist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llwearablelist.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llweb.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llwind.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llwlhandlers.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llworld.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llworldmap.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llworldmapmessage.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llworldmapview.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\omnifilter.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\omnifilterengine.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\particleeditor.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\permissionstracker.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\pipeline.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\quickprefs.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvactions.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvcommon.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlveffects.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvenvironment.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvextensions.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvfloaters.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvhandler.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvhelper.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvinventory.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvlocks.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\rlvui.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\vjfloaterlocalmesh.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\vjlocalmesh.cpp"
-  NACLantispam.cpp
-  NACLfloaterexploresounds.cpp
-  alfloaterregiontracker.cpp
-  animationexplorer.cpp
-  ao.cpp
-  aoengine.cpp
-  aoset.cpp
-  chatbar_as_cmdline.cpp
-  fsareasearch.cpp
-  fsassetblacklist.cpp
-  fsavatarsearchmenu.cpp
-  fschathistory.cpp
-  fschatoptionsmenu.cpp
-  fscommon.cpp
-  fsdata.cpp
-  fsdiscordconnect.cpp
-  fsdroptarget.cpp
-  fsexportperms.cpp
-  fsfloaterassetblacklist.cpp
-  fsfloateravataralign.cpp
-  fsfloateravatarrendersettings.cpp
-  fsfloatercontacts.cpp
-  fsfloaterexport.cpp
-  fsfloaterim.cpp
-  fsfloaterimcontainer.cpp
-  fsfloaterimport.cpp
-  fsfloaternearbychat.cpp
-  fsfloaterpartialinventory.cpp
-  fsfloaterperformance.cpp
-  fsfloaterplacedetails.cpp
-  fsfloaterposer.cpp
-  fsfloaterposestand.cpp
-  fsfloaterprotectedfolders.cpp
-  fsfloatersearch.cpp
-  fsfloatervramusage.cpp
-  fsfloaterwearablefavorites.cpp
-  fsgrouptitleregionmgr.cpp
-  fsinventorycustomtabs.cpp
-  fslslbridge.cpp
-  fslslpreproc.cpp
-  fsnearbychatcontrol.cpp
-  fsnearbychathub.cpp
-  fsnearbychatvoicemonitor.cpp
-  fsnewitemctrl.cpp
-  fspanelcontactsets.cpp
-  fspanelface.cpp
-  fspanelprefs.cpp
-  fspanelradar.cpp
-  fsposestate.cpp
-  fsradar.cpp
-  fsradarentry.cpp
-  fsradarlistctrl.cpp
-  fsradarmenu.cpp
-  fsregiongrouptag.cpp
-  fsslurl.cpp
-  fsworldmapmessage.cpp
-  lfsimfeaturehandler.cpp
-  lggcontactsets.cpp
-  llagent.cpp
-  llagentbenefits.cpp
-  llagentcamera.cpp
-  llagentlanguage.cpp
-  llagentlistener.cpp
-  llagentui.cpp
-  llagentwearables.cpp
-  llagentwearablesfetch.cpp
-  llaisapi.cpp
-  llappearancelistener.cpp
-  llappearancemgr.cpp
-  llattachmentsmgr.cpp
-  llavataractions.cpp
-  llavatarlist.cpp
-  llavatarrenderinfoaccountant.cpp
-  llavatarrendernotifier.cpp
-  llcallingcard.cpp
-  llchannelmanager.cpp
-  llchatitemscontainerctrl.cpp
-  llchiclet.cpp
-  llchicletbar.cpp
-  llcofwearables.cpp
-  llcompilequeue.cpp
-  llcontrolavatar.cpp
-  lldelayedgestureerror.cpp
-  lldrawable.cpp
-  lldrawpool.cpp
-  lldrawpoolalpha.cpp
-  lldrawpoolavatar.cpp
-  lldrawpoolterrain.cpp
-  lldrawpooltree.cpp
-  lldrawpoolwater.cpp
-  lldrawpoolwlsky.cpp
-  llenvironment.cpp
-  llestateinfomodel.cpp
-  lleventpoll.cpp
-  llface.cpp
-  llfavoritesbar.cpp
-  llfilteredwearablelist.cpp
-  llflexibleobject.cpp
-  llflickrconnect.cpp
-  llfloater360capture.cpp
-  llfloaterabout.cpp
-  llfloaterauction.cpp
-  llfloaterautoreplacesettings.cpp
-  llfloateravatarpicker.cpp
-  llfloateravatartextures.cpp
-  llfloaterbulkpermission.cpp
-  llfloaterbump.cpp
-  llfloaterbuy.cpp
-  llfloaterbuycontents.cpp
-  llfloaterbuyland.cpp
-  llfloaterbvhpreview.cpp
-  llfloaterchangeitemthumbnail.cpp
-  llfloaterconversationpreview.cpp
-  llfloatercreatelandmark.cpp
-  llfloaterdirectory.cpp
-  llfloatereditenvironmentbase.cpp
-  llfloatereditextdaycycle.cpp
-  llfloaterevent.cpp
-  llfloaterexperiencepicker.cpp
-  llfloaterexperienceprofile.cpp
-  llfloaterexperiences.cpp
-  llfloaterfixedenvironment.cpp
-  llfloaterflickr.cpp
-  llfloatergesture.cpp
-  llfloatergodtools.cpp
-  llfloaterhoverheight.cpp
-  llfloaterimagepreview.cpp
-  llfloaterimnearbychathandler.cpp
-  llfloaterinspect.cpp
-  llfloaterinventorythumbnailshelper.cpp
-  llfloaterland.cpp
-  llfloaterlandholdings.cpp
-  llfloaterlinkreplace.cpp
-  llfloatermarketplacelistings.cpp
-  llfloatermodeluploadbase.cpp
-  llfloatermyenvironment.cpp
-  llfloatermyscripts.cpp
-  llfloaternotificationstabbed.cpp
-  llfloaterobjectweights.cpp
-  llfloateropenobject.cpp
-  llfloaterpathfindingcharacters.cpp
-  llfloaterpathfindingobjects.cpp
-  llfloaterpay.cpp
-  llfloaterperms.cpp
-  llfloaterpreference.cpp
-  llfloaterpreviewtrash.cpp
-  llfloaterprofile.cpp
-  llfloaterproperties.cpp
-  llfloaterregiondebugconsole.cpp
-  llfloaterregioninfo.cpp
-  llfloaterregionrestarting.cpp
-  llfloaterreporter.cpp
-  llfloaterscriptdebug.cpp
-  llfloaterscriptlimits.cpp
-  llfloaterscriptrecover.cpp
-  llfloatersettingsdebug.cpp
-  llfloatersidepanelcontainer.cpp
-  llfloatersimplesnapshot.cpp
-  llfloatertelehub.cpp
-  llfloatertools.cpp
-  llfloatertopobjects.cpp
-  llfloatertranslationsettings.cpp
-  llfloaterworldmap.cpp
-  llfolderviewmodelinventory.cpp
-  llfriendcard.cpp
-  llgesturemgr.cpp
-  llgiveinventory.cpp
-  llglsandbox.cpp
-  llgltfmateriallist.cpp
-  llgroupactions.cpp
-  llgroupmgr.cpp
-  llheroprobemanager.cpp
-  llhudeffect.cpp
-  llhudeffectbeam.cpp
-  llhudeffectlookat.cpp
-  llhudeffectpointat.cpp
-  llhudeffectresetskeleton.cpp
-  llhudeffecttrail.cpp
-  llhudmanager.cpp
-  llhudview.cpp
-  llimprocessing.cpp
-  llimview.cpp
-  llinspectavatar.cpp
-  llinspectobject.cpp
-  llinspectremoteobject.cpp
-  llinspecttexture.cpp
-  llinventorybridge.cpp
-  llinventoryfilter.cpp
-  llinventoryfunctions.cpp
-  llinventorygallery.cpp
-  llinventorygallerymenu.cpp
-  llinventoryitemslist.cpp
-  llinventorylistener.cpp
-  llinventorylistitem.cpp
-  llinventorymodel.cpp
-  llinventorymodelbackgroundfetch.cpp
-  llinventoryobserver.cpp
-  llinventorypanel.cpp
-  lllandmarkactions.cpp
-  lllegacyatmospherics.cpp
-  lllocalbitmaps.cpp
-  lllocationinputctrl.cpp
-  llmanip.cpp
-  llmanipscale.cpp
-  llmaniptranslate.cpp
-  llmarketplacefunctions.cpp
-  llmaterialeditor.cpp
-  llmaterialmgr.cpp
-  llmediadataclient.cpp
-  llmenuoptionpathfindingrebakenavmesh.cpp
-  llmeshrepository.cpp
-  llmodelpreview.cpp
-  llmoveview.cpp
-  llmutelist.cpp
-  llnavigationbar.cpp
-  llnearbyvoicemoderation.cpp
-  llnetmap.cpp
-  llnotificationgrouphandler.cpp
-  llnotificationhandlerutil.cpp
-  llnotificationlistitem.cpp
-  llnotificationlistview.cpp
-  llnotificationstorage.cpp
-  llnotificationtiphandler.cpp
-  lloutfitgallery.cpp
-  lloutfitobserver.cpp
-  lloutfitslist.cpp
-  llpanelappearancetab.cpp
-  llpanelblockedlist.cpp
-  llpanelclassified.cpp
-  llpanelcontents.cpp
-  llpaneldirbrowser.cpp
-  llpaneldirland.cpp
-  llpaneleditwearable.cpp
-  llpanelenvironment.cpp
-  llpaneleventinfo.cpp
-  llpanelexperiencelisteditor.cpp
-  llpanelexperiencelog.cpp
-  llpanelexperiencepicker.cpp
-  llpanelexperiences.cpp
-  llpanelface.cpp
-  llpanelgroup.cpp
-  llpanelgroupbulk.cpp
-  llpanelgroupbulkban.cpp
-  llpanelgroupexperiences.cpp
-  llpanelgroupinvite.cpp
-  llpanelgrouplandmoney.cpp
-  llpanelgroupnotices.cpp
-  llpanelland.cpp
-  llpanellandaudio.cpp
-  llpanellandmarkinfo.cpp
-  llpanellandmarks.cpp
-  llpanellandmedia.cpp
-  llpanelmaininventory.cpp
-  llpanelmarketplaceinbox.cpp
-  llpanelmarketplaceinboxinventory.cpp
-  llpanelnearbymedia.cpp
-  llpanelobject.cpp
-  llpanelobjectinventory.cpp
-  llpanelopenregionsettings.cpp
-  llpaneloutfitedit.cpp
-  llpaneloutfitsinventory.cpp
-  llpanelpeople.cpp
-  llpanelpeoplemenus.cpp
-  llpanelpermissions.cpp
-  llpanelplaceinfo.cpp
-  llpanelplaceprofile.cpp
-  llpanelplaces.cpp
-  llpanelplacestab.cpp
-  llpanelprimmediacontrols.cpp
-  llpanelprofile.cpp
-  llpanelprofileclassifieds.cpp
-  llpanelprofilepicks.cpp
-  llpanelsnapshotinventory.cpp
-  llpanelsnapshotpostcard.cpp
-  llpanelteleporthistory.cpp
-  llpanelvolume.cpp
-  llpanelwearing.cpp
-  llpathfindingmanager.cpp
-  llpathfindingnavmeshzone.cpp
-  llpathfindingpathtool.cpp
-  llpbrterrainfeatures.cpp
-  llpersistentnotificationstorage.cpp
-  llplacesfolderview.cpp
-  llplacesinventorybridge.cpp
-  llplacesinventorypanel.cpp
-  llpostcard.cpp
-  llpreview.cpp
-  llpreviewgesture.cpp
-  llpreviewnotecard.cpp
-  llpreviewscript.cpp
-  llpreviewsound.cpp
-  llpreviewtexture.cpp
-  llproductinforequest.cpp
-  llreflectionmap.cpp
-  llreflectionmapmanager.cpp
-  llregioninfomodel.cpp
-  llregionposition.cpp
-  llremoteparcelrequest.cpp
-  llsaveoutfitcombobtn.cpp
-  llsceneview.cpp
-  llscriptfloater.cpp
-  llselectmgr.cpp
-  llsettingspicker.cpp
-  llsettingsvo.cpp
-  llsidepanelappearance.cpp
-  llsidepanelinventory.cpp
-  llsidepanelinventorysubpanel.cpp
-  llsidepaneliteminfo.cpp
-  llsidepaneltaskinfo.cpp
-  llsky.cpp
-  llsnapshotlivepreview.cpp
-  llspatialpartition.cpp
-  llspeakers.cpp
-  llstartup.cpp
-  llstatslistener.cpp
-  llstatusbar.cpp
-  llsurface.cpp
-  llsurfacepatch.cpp
-  llsyntaxid.cpp
-  llteleporthistory.cpp
-  llterrainpaintmap.cpp
-  lltexturectrl.cpp
-  lltexturefetch.cpp
-  lltextureinfo.cpp
-  lltexturestats.cpp
-  lltextureview.cpp
-  lltoastgroupnotifypanel.cpp
-  lltoastnotifypanel.cpp
-  lltoolbarview.cpp
-  lltoolbrush.cpp
-  lltooldraganddrop.cpp
-  lltoolgrab.cpp
-  lltoolobjpicker.cpp
-  lltoolpie.cpp
-  lltoolpipette.cpp
-  lltoolplacer.cpp
-  lltoolselect.cpp
-  lltoolselectrect.cpp
-  lltracker.cpp
-  lluiavatar.cpp
-  llurldispatcher.cpp
-  llviewerassetstorage.cpp
-  llviewerassetupload.cpp
-  llviewerattachmenu.cpp
-  llvieweraudio.cpp
-  llviewercamera.cpp
-  llviewerchat.cpp
-  llviewercontrol.cpp
-  llviewerdisplay.cpp
-  llviewerdisplayname.cpp
+  C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\CL.exe /c /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llaudio" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcommon" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmath" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmeshoptimizer" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmessage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llfilesystem" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcorehttp" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llxml" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcharacter" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llimage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llinventory" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llplugin" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llprimitive" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llrender" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwindow" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llphysicsextensionsos" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llui" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwebrtc" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\viewer_components\login" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llappearance" /Zi /nologo /W3 /WX /diagnostics:column /MP /O2 /Ob2 /Oi /Ot /Oy- /D _UNICODE /D UNICODE /D WIN32 /D _WINDOWS /D EBUG /D LL_RELEASE=1 /D LL_RELEASE_FOR_DOWNLOAD=1 /D NDEBUG /D _SECURE_STL=0 /D _HAS_ITERATOR_DEBUGGING=0 /D LL_WINDOWS=1 /D UNICODE /D _UNICODE /D WINVER=0x0601 /D _WIN32_WINNT=0x0601 /D LL_OS_DRAGDROP_ENABLED=1 /D LIB_NDOF=1 /D OPENSIM /D ADDRESS_SIZE=64 /D BOOST_BIND_GLOBAL_PLACEHOLDERS /D GLM_FORCE_DEFAULT_ALIGNED_GENTYPES=1 /D GLM_ENABLE_EXPERIMENTAL=1 /D SSE2NEON_SUPPRESS_WARNINGS=1 /D WIN32_LEAN_AND_MEAN /D NOMINMAX /D _CRT_SECURE_NO_WARNINGS /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_OBSOLETE_NO_WARNINGS /D _WINSOCK_DEPRECATED_NO_WARNINGS /D APR_DECLARE_STATIC=1 /D APU_DECLARE_STATIC=1 /D API_DECLARE_STATIC=1 /D XML_STATIC=1 /D LL_OPENAL=1 /D HUNSPELL_STATIC=1 /D "CMAKE_INTDIR=\"Release\"" /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /std:c++20 /permissive- /Yu"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /Fp"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/firestorm-bin.dir/Release//cmake_pch.pch" /Fo"firestorm-bin.dir\Release\\" /Fd"firestorm-bin.dir\Release\vc143.pdb" /external:W0 /TP /FI"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /errorReport:queue  /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/apr-1" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/zlib-ng" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/meshoptimizer" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/nghttp2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/AL" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/openjpeg" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/libpng16" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/freetype2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada/1.4" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/vhacd" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/hunspell" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/glod" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/discord-rpc" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/Growl" /Zo /c /bigobj "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\fslocaladjust.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llversioninfo.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerfloaterreg.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewerobjectlist.cpp"
+  fslocaladjust.cpp
+  llversioninfo.cpp
   llviewerfloaterreg.cpp
-  llviewergesture.cpp
-  llviewerinventory.cpp
-  llviewerjointattachment.cpp
-  llviewermedia.cpp
-  llviewermediafocus.cpp
-  llviewermenufile.cpp
-  llviewermessage.cpp
-  llviewerobject.cpp
   llviewerobjectlist.cpp
-  llvieweroctree.cpp
-  llviewerparcelaskplay.cpp
-  llviewerparcelmedia.cpp
-  llviewerparcelmediaautoplay.cpp
-  llviewerparcelmgr.cpp
-  llviewerparceloverlay.cpp
-  llviewerpartsim.cpp
-  llviewerpartsource.cpp
-  llviewerregion.cpp
-  llviewerstats.cpp
-  llviewerstatsrecorder.cpp
-  llviewertexlayer.cpp
-  llviewertexteditor.cpp
-  llviewertexturelist.cpp
-  llviewerwearable.cpp
-  llviewerwindow.cpp
-  llvlcomposition.cpp
-  llvlmanager.cpp
-  llvoavatar.cpp
-  llvoavatarself.cpp
-  llvocache.cpp
-  llvograss.cpp
-  llvoicechannel.cpp
-  llvoiceclient.cpp
-  llvoicevivox.cpp
-  llvoicewebrtc.cpp
-  llvopartgroup.cpp
-  llvosky.cpp
-  llvosurfacepatch.cpp
-  llvotree.cpp
-  llvovolume.cpp
-  llvowater.cpp
-  llwearableitemslist.cpp
-  llwearablelist.cpp
-  llweb.cpp
-  llwind.cpp
-  llwlhandlers.cpp
-  llworld.cpp
-  llworldmap.cpp
-  llworldmapmessage.cpp
-  llworldmapview.cpp
-  omnifilter.cpp
-  omnifilterengine.cpp
-  particleeditor.cpp
-  permissionstracker.cpp
-  pipeline.cpp
-  quickprefs.cpp
-  rlvactions.cpp
-  rlvcommon.cpp
-  rlveffects.cpp
-  rlvenvironment.cpp
-  rlvextensions.cpp
-  rlvfloaters.cpp
-  rlvhandler.cpp
-  rlvhelper.cpp
-  rlvinventory.cpp
-  rlvlocks.cpp
-  rlvui.cpp
-  vjfloaterlocalmesh.cpp
-  vjlocalmesh.cpp
-  C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\CL.exe /c /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llaudio" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcommon" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmath" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmeshoptimizer" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmessage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llfilesystem" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcorehttp" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llxml" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcharacter" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llimage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llinventory" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llplugin" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llprimitive" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llrender" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwindow" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llphysicsextensionsos" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llui" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwebrtc" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\viewer_components\login" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llappearance" /Zi /nologo /W3 /WX /diagnostics:column /MP /O2 /Ob2 /Oi /Ot /Oy- /D _UNICODE /D UNICODE /D WIN32 /D _WINDOWS /D EBUG /D LL_RELEASE=1 /D LL_RELEASE_FOR_DOWNLOAD=1 /D NDEBUG /D _SECURE_STL=0 /D _HAS_ITERATOR_DEBUGGING=0 /D LL_WINDOWS=1 /D UNICODE /D _UNICODE /D WINVER=0x0601 /D _WIN32_WINNT=0x0601 /D LL_OS_DRAGDROP_ENABLED=1 /D LIB_NDOF=1 /D OPENSIM /D ADDRESS_SIZE=64 /D BOOST_BIND_GLOBAL_PLACEHOLDERS /D GLM_FORCE_DEFAULT_ALIGNED_GENTYPES=1 /D GLM_ENABLE_EXPERIMENTAL=1 /D SSE2NEON_SUPPRESS_WARNINGS=1 /D WIN32_LEAN_AND_MEAN /D NOMINMAX /D _CRT_SECURE_NO_WARNINGS /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_OBSOLETE_NO_WARNINGS /D _WINSOCK_DEPRECATED_NO_WARNINGS /D APR_DECLARE_STATIC=1 /D APU_DECLARE_STATIC=1 /D API_DECLARE_STATIC=1 /D XML_STATIC=1 /D LL_OPENAL=1 /D HUNSPELL_STATIC=1 /D "CMAKE_INTDIR=\"Release\"" /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /std:c++20 /permissive- /Yu"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /Fp"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/firestorm-bin.dir/Release//cmake_pch.pch" /Fo"firestorm-bin.dir\Release\\" /Fd"firestorm-bin.dir\Release\vc143.pdb" /external:W0 /TP /FI"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /errorReport:queue  /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/apr-1" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/zlib-ng" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/meshoptimizer" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/nghttp2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/AL" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/openjpeg" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/libpng16" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/freetype2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada/1.4" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/vhacd" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/hunspell" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/glod" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/discord-rpc" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/Growl" /Zo /c /bigobj /bigobj "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llappviewer.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewermenu.cpp"
-  llappviewer.cpp
+  C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\CL.exe /c /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llaudio" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcommon" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmath" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmeshoptimizer" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmessage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llfilesystem" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcorehttp" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llxml" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcharacter" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llimage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llinventory" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llplugin" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llprimitive" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llrender" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwindow" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llphysicsextensionsos" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llui" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwebrtc" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\viewer_components\login" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llappearance" /Zi /nologo /W3 /WX /diagnostics:column /MP /O2 /Ob2 /Oi /Ot /Oy- /D _UNICODE /D UNICODE /D WIN32 /D _WINDOWS /D EBUG /D LL_RELEASE=1 /D LL_RELEASE_FOR_DOWNLOAD=1 /D NDEBUG /D _SECURE_STL=0 /D _HAS_ITERATOR_DEBUGGING=0 /D LL_WINDOWS=1 /D UNICODE /D _UNICODE /D WINVER=0x0601 /D _WIN32_WINNT=0x0601 /D LL_OS_DRAGDROP_ENABLED=1 /D LIB_NDOF=1 /D OPENSIM /D ADDRESS_SIZE=64 /D BOOST_BIND_GLOBAL_PLACEHOLDERS /D GLM_FORCE_DEFAULT_ALIGNED_GENTYPES=1 /D GLM_ENABLE_EXPERIMENTAL=1 /D SSE2NEON_SUPPRESS_WARNINGS=1 /D WIN32_LEAN_AND_MEAN /D NOMINMAX /D _CRT_SECURE_NO_WARNINGS /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_OBSOLETE_NO_WARNINGS /D _WINSOCK_DEPRECATED_NO_WARNINGS /D APR_DECLARE_STATIC=1 /D APU_DECLARE_STATIC=1 /D API_DECLARE_STATIC=1 /D XML_STATIC=1 /D LL_OPENAL=1 /D HUNSPELL_STATIC=1 /D "CMAKE_INTDIR=\"Release\"" /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /std:c++20 /permissive- /Yu"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /Fp"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/firestorm-bin.dir/Release//cmake_pch.pch" /Fo"firestorm-bin.dir\Release\\" /Fd"firestorm-bin.dir\Release\vc143.pdb" /external:W0 /TP /FI"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /errorReport:queue  /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/apr-1" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/zlib-ng" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/meshoptimizer" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/nghttp2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/AL" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/openjpeg" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/libpng16" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/freetype2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada/1.4" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/vhacd" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/hunspell" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/glod" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/discord-rpc" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/Growl" /Zo /c /bigobj /bigobj "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llviewermenu.cpp"
   llviewermenu.cpp
   All outputs are up-to-date.
+  C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Tools\MSVC\14.44.35207\bin\HostX64\x64\CL.exe /c /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llaudio" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcommon" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmath" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmeshoptimizer" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmessage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llfilesystem" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcorehttp" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llxml" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcharacter" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llimage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llinventory" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llplugin" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llprimitive" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llrender" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwindow" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llphysicsextensionsos" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llui" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwebrtc" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\viewer_components\login" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llappearance" /Zi /nologo /W3 /WX /diagnostics:column /MP /O2 /Ob2 /Oi /Ot /Oy- /D _UNICODE /D UNICODE /D WIN32 /D _WINDOWS /D EBUG /D LL_RELEASE=1 /D LL_RELEASE_FOR_DOWNLOAD=1 /D NDEBUG /D _SECURE_STL=0 /D _HAS_ITERATOR_DEBUGGING=0 /D LL_WINDOWS=1 /D UNICODE /D _UNICODE /D WINVER=0x0601 /D _WIN32_WINNT=0x0601 /D LL_OS_DRAGDROP_ENABLED=1 /D LIB_NDOF=1 /D OPENSIM /D ADDRESS_SIZE=64 /D BOOST_BIND_GLOBAL_PLACEHOLDERS /D GLM_FORCE_DEFAULT_ALIGNED_GENTYPES=1 /D GLM_ENABLE_EXPERIMENTAL=1 /D SSE2NEON_SUPPRESS_WARNINGS=1 /D WIN32_LEAN_AND_MEAN /D NOMINMAX /D _CRT_SECURE_NO_WARNINGS /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_OBSOLETE_NO_WARNINGS /D _WINSOCK_DEPRECATED_NO_WARNINGS /D APR_DECLARE_STATIC=1 /D APU_DECLARE_STATIC=1 /D API_DECLARE_STATIC=1 /D XML_STATIC=1 /D LL_OPENAL=1 /D HUNSPELL_STATIC=1 /D "CMAKE_INTDIR=\"Release\"" /D "LL_VIEWER_CHANNEL=Firestorm-MultiMonitor" /D LL_VIEWER_VERSION_MAJOR=7 /D LL_VIEWER_VERSION_MINOR=2 /D LL_VIEWER_VERSION_PATCH=5 /D LL_VIEWER_VERSION_BUILD=81796 /D "FS_VIEWER_VERSION_GITHASH=\"8fd9aa2e07\"" /D "LLBUILD_CONFIG=\"Release\"" /EHsc /MD /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /std:c++20 /permissive- /Yu"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /Fp"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/firestorm-bin.dir/Release//cmake_pch.pch" /Fo"firestorm-bin.dir\Release\\" /Fd"firestorm-bin.dir\Release\vc143.pdb" /external:W0 /TP /FI"C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/newview/CMakeFiles/firestorm-bin.dir/Release/cmake_pch.hxx" /errorReport:queue  /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/apr-1" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/zlib-ng" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/meshoptimizer" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/nghttp2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/AL" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/openjpeg" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/libpng16" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/freetype2" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/collada/1.4" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/vhacd" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/hunspell" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/glod" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/discord-rpc" /external:I "C:/Apache24/htdocs/personalProjects/phoenix-firestorm/build-vc170-64/packages/include/Growl" /Zo /c /bigobj "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llappviewerwin32.cpp" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\llvelopack.cpp"
+  llappviewerwin32.cpp
+  llvelopack.cpp
 ResourceCompile:
-  All outputs are up-to-date.
+  C:\Program Files (x86)\Windows Kits\10\bin\10.0.26100.0\x64\rc.exe /D _UNICODE /D UNICODE /D WIN32 /D _WINDOWS /D EBUG /D LL_RELEASE=1 /D LL_RELEASE_FOR_DOWNLOAD=1 /D NDEBUG /D _SECURE_STL=0 /D _HAS_ITERATOR_DEBUGGING=0 /D LL_WINDOWS=1 /D UNICODE /D _UNICODE /D WINVER=0x0601 /D _WIN32_WINNT=0x0601 /D LL_OS_DRAGDROP_ENABLED=1 /D LIB_NDOF=1 /D OPENSIM /D ADDRESS_SIZE=64 /D BOOST_BIND_GLOBAL_PLACEHOLDERS /D GLM_FORCE_DEFAULT_ALIGNED_GENTYPES=1 /D GLM_ENABLE_EXPERIMENTAL=1 /D SSE2NEON_SUPPRESS_WARNINGS=1 /D WIN32_LEAN_AND_MEAN /D NOMINMAX /D _CRT_SECURE_NO_WARNINGS /D _CRT_NONSTDC_NO_DEPRECATE /D _CRT_OBSOLETE_NO_WARNINGS /D _WINSOCK_DEPRECATED_NO_WARNINGS /D APR_DECLARE_STATIC=1 /D APU_DECLARE_STATIC=1 /D API_DECLARE_STATIC=1 /D XML_STATIC=1 /D LL_OPENAL=1 /D HUNSPELL_STATIC=1 /D "CMAKE_INTDIR=\\\"Release\\\"" /l"0x0409" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\newview\res" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llaudio" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcommon" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmath" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmeshoptimizer" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llmessage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llfilesystem" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcorehttp" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llxml" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llcharacter" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llimage" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llinventory" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llplugin" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llprimitive" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llrender" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwindow" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llphysicsextensionsos" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llui" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llwebrtc" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\viewer_components\login" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\indra\llappearance" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\apr-1" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\zlib-ng" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\meshoptimizer" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\nghttp2" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\AL" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\openjpeg" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\libpng16" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\freetype2" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\collada" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\collada\1.4" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\vhacd" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\hunspell" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\glod" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\discord-rpc" /I"C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\packages\include\Growl" /nologo /fo"firestorm-bin.dir\Release\viewerRes.res" "C:\Apache24\htdocs\personalProjects\phoenix-firestorm\build-vc170-64\newview\viewerRes.rc" 
 PreLinkEvent:
   Verifying message template - See http://wiki.secondlife.com/wiki/Template_verifier.py
   setlocal
@@ -1125,6 +856,7 @@ Link:
   "firestorm-bin.dir\Release\fsradarmenu.obj"
   "firestorm-bin.dir\Release\fsregioncross.obj"
   "firestorm-bin.dir\Release\fsregiongrouptag.obj"
+  "firestorm-bin.dir\Release\fslocaladjust.obj"
   "firestorm-bin.dir\Release\fsscriptlibrary.obj"
   "firestorm-bin.dir\Release\fsscrolllistctrl.obj"
   "firestorm-bin.dir\Release\fsslurlcommand.obj"
@@ -1904,5 +1636,5 @@ Build succeeded.
     0 Warning(s)
     0 Error(s)
 
-Time Elapsed 00:14:52.41
+Time Elapsed 00:01:44.72
 finished

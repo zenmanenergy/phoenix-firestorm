@@ -183,6 +183,7 @@ set(viewer_SOURCE_FILES
     fsradarmenu.cpp
     fsregioncross.cpp
     fsregiongrouptag.cpp
+    fslocaladjust.cpp
     fsscriptlibrary.cpp
     fsscrolllistctrl.cpp
     fsslurlcommand.cpp
@@ -1053,6 +1054,7 @@ set(viewer_HEADER_FILES
     fsradarmenu.h
     fsregioncross.h
     fsregiongrouptag.h
+    fslocaladjust.h
     fsscriptlibrary.h
     fsscrolllistctrl.h
     fsslurl.h

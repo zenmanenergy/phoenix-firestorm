@@ -27,6 +27,7 @@
 #include "llviewerprecompiledheaders.h"
 
 #include "llviewerobjectlist.h"
+#include "fslocaladjust.h" // <FS:Steve/>
 
 #include "message.h"
 #include "llfasttimer.h"
@@ -276,6 +277,9 @@ void LLViewerObjectList::processUpdateCore(LLViewerObject* objectp,
     {
         gPipeline.addObject(objectp);
     }
+
+    // <FS:Steve> Re-apply local adjustments to other avatars' attachments after each update
+    FSLocalAdjust::getInstance()->onObjectUpdated(objectp);
 
     // Also sets the approx. pixel area
     objectp->setPixelAreaAndAngle(gAgent);

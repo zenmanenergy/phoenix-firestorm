@@ -246,6 +246,15 @@
     <menu_item_call.on_click
       function="Object.DerenderPermanent" />
    </menu_item_call>
+   <!-- <FS:Steve> Move/rotate this attachment in your own view only -->
+   <menu_item_call
+      label="Adjust Locally..."
+      name="LocalAdjust">
+    <menu_item_call.on_click
+      function="Object.LocalAdjust" />
+    <menu_item_call.on_enable
+      function="Object.EnableLocalAdjust" />
+   </menu_item_call>
     <menu_item_call
          label="Show Textures"
          name="Debug...">

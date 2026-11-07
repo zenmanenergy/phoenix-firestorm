@@ -35,6 +35,12 @@ This fork ([zenmanenergy/phoenix-firestorm](https://github.com/zenmanenergy/phoe
 - The seen-time sort is numeric, so 10 minutes sorts after 9 minutes.
 - Columns can be turned on and off from the radar options menu.
 
+### Adjust other people's attachments locally
+
+- Right-click something another person is wearing and choose Adjust Locally... (in the pie menu: More > More > Display > Adjust...). A small window lets you move it (X, Y, Z in meters) and rotate it (X, Y, Z in degrees), or Reset it.
+- Only you see the change; nothing is sent to the server or the wearer. It lasts while they go out of view and come back, and resets when they re-attach the item or log in again. If they move the item themselves, your adjustment is applied on top of their new position.
+- Works on items that are not rigged mesh (jewelry, hats, glasses, props, non-rigged hair). Rigged mesh follows the skeleton, so it doesn't move.
+
 ### Groups
 
 - Region group tags: in a group's profile, check "Wear this group's tag in [REGION]" to make that group active whenever you arrive in the current region. When you leave for a region without a group set, your active group goes back to None. Stored per account (FSRegionGroupTags) and can be turned off with FSRegionGroupTagsEnabled.
@@ -60,7 +66,7 @@ Set up the build tools as described in [doc/building_windows.md](doc/building_wi
     autobuild configure -A 64 -c ReleaseFS_open -- --chan MultiMonitor -DLL_TESTS:BOOL=FALSE
     autobuild build -A 64 -c ReleaseFS_open --no-configure > build-release.txt 2>&1
 
-Configure only needs to be run once, or again when a CMakeLists.txt file changes. Don't click inside the Command Prompt window while it builds, or Windows pauses the build. The viewer is build-vc170-64\newview\Release\firestorm-bin.exe and has to be started with indra\newview as its working folder.
+Use Command Prompt, not PowerShell: in PowerShell, build-env.bat has no effect and the configure arguments get split. Configure only needs to be run once, or again when a CMakeLists.txt file changes (for example when new source files are added). Don't click inside the Command Prompt window while it builds, or Windows pauses the build. The viewer is build-vc170-64\newview\Release\firestorm-bin.exe and has to be started with indra\newview as its working folder.
 
 ## Open Source
 

@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<!-- <FS:Steve> Move/rotate an attachment another avatar is wearing, in your own view only -->
+<floater
+ can_resize="false"
+ height="234"
+ layout="topleft"
+ name="fs_local_adjust"
+ save_rect="true"
+ single_instance="false"
+ title="Adjust Locally"
+ width="280">
+    <floater.string name="unknown_object">Attachment not in view</floater.string>
+    <floater.string name="object_label">Worn by [AVATAR] on [POINT]</floater.string>
+    <text
+     follows="left|top|right"
+     height="16"
+     layout="topleft"
+     left="10"
+     name="object_text"
+     top="24"
+     use_ellipses="true"
+     width="260">
+        Attachment
+    </text>
+    <text
+     follows="left|top|right"
+     height="28"
+     layout="topleft"
+     left="10"
+     name="help_text"
+     top_pad="2"
+     word_wrap="true"
+     width="260">
+        Only you see this. It resets when they put the item on again or log in again.
+    </text>
+    <text
+     follows="left|top"
+     height="16"
+     layout="topleft"
+     left="10"
+     name="pos_label"
+     top_pad="6"
+     width="125">
+        Move (m)
+    </text>
+    <text
+     follows="left|top"
+     height="16"
+     layout="topleft"
+     left="145"
+     name="rot_label"
+     top_delta="0"
+     width="125">
+        Rotate (degrees)
+    </text>
+    <spinner
+     decimal_digits="3"
+     follows="left|top"
+     height="20"
+     increment="0.005"
+     label="X"
+     label_width="14"
+     layout="topleft"
+     left="10"
+     max_val="2"
+     min_val="-2"
+     name="pos_x"
+     top_pad="4"
+     width="125" />
+    <spinner
+     decimal_digits="1"
+     follows="left|top"
+     height="20"
+     increment="1"
+     label="X"
+     label_width="14"
+     layout="topleft"
+     left="145"
+     max_val="180"
+     min_val="-180"
+     name="rot_x"
+     top_delta="0"
+     width="125" />
+    <spinner
+     decimal_digits="3"
+     follows="left|top"
+     height="20"
+     increment="0.005"
+     label="Y"
+     label_width="14"
+     layout="topleft"
+     left="10"
+     max_val="2"
+     min_val="-2"
+     name="pos_y"
+     top_pad="4"
+     width="125" />
+    <spinner
+     decimal_digits="1"
+     follows="left|top"
+     height="20"
+     increment="1"
+     label="Y"
+     label_width="14"
+     layout="topleft"
+     left="145"
+     max_val="180"
+     min_val="-180"
+     name="rot_y"
+     top_delta="0"
+     width="125" />
+    <spinner
+     decimal_digits="3"
+     follows="left|top"
+     height="20"
+     increment="0.005"
+     label="Z"
+     label_width="14"
+     layout="topleft"
+     left="10"
+     max_val="2"
+     min_val="-2"
+     name="pos_z"
+     top_pad="4"
+     width="125" />
+    <spinner
+     decimal_digits="1"
+     follows="left|top"
+     height="20"
+     increment="1"
+     label="Z"
+     label_width="14"
+     layout="topleft"
+     left="145"
+     max_val="180"
+     min_val="-180"
+     name="rot_z"
+     top_delta="0"
+     width="125" />
+    <text
+     follows="left|top|right"
+     height="16"
+     layout="topleft"
+     left="10"
+     name="status_text"
+     text_color="Yellow"
+     top_pad="6"
+     visible="false"
+     width="260">
+        Not in view right now.
+    </text>
+    <button
+     follows="left|top"
+     height="23"
+     label="Reset"
+     layout="topleft"
+     left="10"
+     name="reset_btn"
+     top_pad="6"
+     width="80" />
+    <button
+     follows="left|top"
+     height="23"
+     label="Close"
+     layout="topleft"
+     left="190"
+     name="close_btn"
+     top_delta="0"
+     width="80" />
+</floater>

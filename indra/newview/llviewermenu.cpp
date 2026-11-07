@@ -32,6 +32,7 @@
 #endif
 
 #include "llviewermenu.h"
+#include "fslocaladjust.h" // <FS:Steve/>
 
 // linden library includes
 #include "llavatarnamecache.h"  // IDEVO (I Are Not Men!)
@@ -3665,6 +3666,17 @@ class LLObjectEnableReportAbuse : public view_listener_t
     }
 };
 
+
+// <FS:Steve> Local adjust is for attachments worn by other avatars
+bool enable_local_adjust()
+{
+    if (FSLocalAdjust::getAdjustableRoot(LLToolPie::getInstance()->getPick().getObject().get()))
+    {
+        return true;
+    }
+    return FSLocalAdjust::getAdjustableRoot(LLSelectMgr::getInstance()->getSelection()->getPrimaryObject()) != nullptr;
+}
+// </FS:Steve>
 
 void handle_object_touch()
 {
@@ -13345,6 +13357,8 @@ void initialize_menus()
     // Object pie menu
     view_listener_t::addMenu(new LLObjectBuild(), "Object.Build");
     commit.add("Object.Touch", boost::bind(&handle_object_touch));
+    commit.add("Object.LocalAdjust", boost::bind(&FSFloaterLocalAdjust::showForSelection)); // <FS:Steve/>
+    enable.add("Object.EnableLocalAdjust", boost::bind(&enable_local_adjust)); // <FS:Steve/>
     commit.add("Object.ShowOriginal", boost::bind(&handle_object_show_original));
     commit.add("Object.SetFavorite", boost::bind(&handle_object_set_favorite, _2));
     commit.add("Object.SitOrStand", boost::bind(&handle_object_sit_or_stand));
